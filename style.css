@@ -1,0 +1,124 @@
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: #000;
+  color: #d8d2c4;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+/* Scroll length = how "slow" the video plays while scrolling */
+.track { height: 700vh; }
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+
+#canvas,
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.overlay { pointer-events: none; }
+
+/* MAISON KOLKHETI — visible only inside the cursor spotlight */
+.brand {
+  font: 500 68px "Playfair Display", Georgia, serif;
+  letter-spacing: 0.1em;
+  fill: #f6e3b4;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.6);
+  stroke-width: 7px;
+  stroke-linejoin: round;
+}
+
+.hit {
+  fill: transparent;
+  pointer-events: none;
+}
+.stage.is-end .hit {
+  pointer-events: all;
+}
+
+/* Hints */
+.hint {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.hint--start {
+  bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.hint--start i {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(#fff, transparent);
+  animation: drip 1.8s ease-in-out infinite;
+}
+@keyframes drip {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  50%  { transform: scaleY(1); transform-origin: top; }
+  51%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+.hint--end {
+  top: 28px;
+  opacity: 0;
+}
+.stage.is-end .hint--end { opacity: 1; }
+.stage.is-revealed .hint--end { opacity: 0; }
+
+/* Loader */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  background: #000;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+.loader.is-done { opacity: 0; visibility: hidden; }
+.loader__bar {
+  width: 180px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+}
+.loader__bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: #fff;
+}
+.loader p {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
