@@ -59,9 +59,26 @@
   lockViewport(true);
 
   // ---------- Canvas fit ----------
-  // Vertical crop split: 0 = keep the top edge (crop only bottom), 0.5 = center.
-  // Low value keeps the compass in the top-left corner visible.
-  const ALIGN_Y = 0.5;
+  // Where the vertical crop falls. Centring it cut the top off the compass
+  // rose while leaving dead space under the GEORGIA caption, so instead of a
+  // fixed split we work out an offset that keeps both in frame: everything
+  // from the top of the compass "N" down to the bottom of the caption.
+  const SAFE_TOP = 30;      // top of the compass "N"
+  const SAFE_BOTTOM = 645;  // bottom of the GEORGIA caption
+
+  // vh = how much of the frame's 720 units the viewport actually shows.
+  // Returns the crop split: 0 keeps the top edge, 1 keeps the bottom edge.
+  function alignY(vh) {
+    const slack = FRAME_H - vh;
+    if (slack <= 0.5) return 0.5;               // nothing cropped vertically
+
+    const lowest = Math.max(0, SAFE_BOTTOM - vh);  // any lower loses the caption
+    const highest = Math.min(SAFE_TOP, slack);     // any higher loses the compass
+    // Sit midway between the two limits for even margins; if the viewport is
+    // too short to hold both, fall back to centring the frame.
+    const offset = lowest <= highest ? (lowest + highest) / 2 : slack / 2;
+    return offset / slack;
+  }
 
   // Bounding box of the Georgia constellation in frame coordinates, plus the
   // breathing room we want around it. Plain "cover" on a 9:19.5 phone zooms so
@@ -97,7 +114,7 @@
     const s = fitScale(sw, sh);
     const vw = sw / s;
     const vh = sh / s;
-    overlay.setAttribute("viewBox", `${(FRAME_W - vw) / 2} ${(FRAME_H - vh) * ALIGN_Y} ${vw} ${vh}`);
+    overlay.setAttribute("viewBox", `${(FRAME_W - vw) / 2} ${(FRAME_H - vh) * alignY(vh)} ${vw} ${vh}`);
 
     // Cover zooms hard on a phone, so size the wordmark off the stage instead
     // of leaving it at a fixed 68 frame units (~80px on a 390px wide screen).
@@ -117,8 +134,9 @@
     const scale = fitScale(cw, ch);
     const w = FRAME_W * scale;
     const h = FRAME_H * scale;
+    const ay = alignY(ch / scale);
     const x = (cw - w) / 2;
-    const y = (ch - h) * ALIGN_Y;
+    const y = (ch - h) * ay;
 
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
@@ -132,7 +150,7 @@
       const bs = Math.max(cw / FRAME_W, ch / FRAME_H);
       const bw = FRAME_W * bs;
       const bh = FRAME_H * bs;
-      ctx.drawImage(backdrop, (cw - bw) / 2, (ch - bh) * ALIGN_Y, bw, bh);
+      ctx.drawImage(backdrop, (cw - bw) / 2, (ch - bh) * ay, bw, bh);
       ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
       ctx.fillRect(0, 0, cw, ch);
     }
