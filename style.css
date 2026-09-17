@@ -74,18 +74,18 @@ html, body {
   pointer-events: all;
 }
 
-/* Way into the catalogue — top right, and only once the map is on screen, so
-   it never competes with the animation. */
+/* Way into the catalogue — top right, numbered like rooms in a gallery, and
+   only once the map is on screen so it never competes with the animation. */
 .enter {
   position: absolute;
-  top: clamp(18px, 3.4vh, 34px);
-  right: clamp(18px, 4vw, 48px);
+  top: clamp(16px, 3vh, 30px);
+  right: var(--edge);
   display: flex;
-  gap: clamp(18px, 3vw, 40px);
+  gap: clamp(16px, 3vw, 34px);
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateY(-8px);
   pointer-events: none;
-  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 1s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .stage.is-end .enter {
   opacity: 1;
@@ -95,30 +95,58 @@ html, body {
 
 .enter a {
   position: relative;
-  padding: 8px 2px;
-  font-size: clamp(12px, 2.6vw, 14px);
-  letter-spacing: 0.2em;
+  padding: 6px 0;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
   text-decoration: none;
-  color: rgba(246, 227, 180, 0.82);
+  color: rgba(232, 227, 215, 0.66);
   white-space: nowrap;
-  transition: color 0.35s ease;
+  transition: color 0.4s ease;
+}
+.enter a b {
+  margin-right: 8px;
+  font-weight: 400;
+  color: var(--brass);
 }
 .enter a::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: 2px;
+  bottom: 0;
   width: 100%;
   height: 1px;
-  background: #f6e3b4;
+  background: var(--brass);
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.enter a:hover { color: #f6e3b4; }
+.enter a:hover { color: var(--paper); }
 .enter a:hover::after {
   transform: scaleX(1);
   transform-origin: left;
+}
+
+/* Wordmark, mirrored from the catalogue header so the two read as one site */
+.mark {
+  position: absolute;
+  top: clamp(16px, 3vh, 30px);
+  left: var(--edge);
+  padding: 6px 0;
+  font: 500 clamp(11px, 1.7vw, 14px)/1 "Playfair Display", Georgia, serif;
+  letter-spacing: 0.3em;
+  color: rgba(232, 227, 215, 0.72);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 1s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.stage.is-end .mark {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
 }
 
 /* Hints */
@@ -126,27 +154,28 @@ html, body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 400;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.7);
-  transition: opacity 0.6s ease;
+  color: rgba(232, 227, 215, 0.5);
+  transition: opacity 0.8s ease;
   pointer-events: none;
   white-space: nowrap;
 }
 
 .hint--start {
-  bottom: 32px;
+  bottom: clamp(24px, 5vh, 44px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 .hint--start i {
   width: 1px;
-  height: 40px;
-  background: linear-gradient(#fff, transparent);
-  animation: drip 1.8s ease-in-out infinite;
+  height: 46px;
+  background: linear-gradient(var(--brass), transparent);
+  animation: drip 2.2s ease-in-out infinite;
 }
 @keyframes drip {
   0%   { transform: scaleY(0); transform-origin: top; }
@@ -155,7 +184,7 @@ html, body {
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
-/* Loader */
+/* Loader — the wordmark, a rule that fills, and the count. Nothing else. */
 .loader {
   position: fixed;
   inset: 0;
@@ -163,26 +192,36 @@ html, body {
   display: grid;
   place-content: center;
   justify-items: center;
-  gap: 14px;
-  background: #000;
-  transition: opacity 0.6s ease, visibility 0.6s;
+  gap: 20px;
+  background: #060607;
+  transition: opacity 0.8s ease, visibility 0.8s;
 }
 .loader.is-done { opacity: 0; visibility: hidden; }
+
+.loader__mark {
+  font: 500 clamp(13px, 2.4vw, 17px)/1 "Playfair Display", Georgia, serif;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  color: var(--paper);
+}
+
 .loader__bar {
-  width: 180px;
+  width: min(56vw, 230px);
   height: 1px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(232, 227, 215, 0.14);
 }
 .loader__bar span {
   display: block;
   height: 100%;
   width: 0;
-  background: #fff;
-}
-.loader p {
-  margin: 0;
-  font-size: 11px;
-  letter-spacing: 0.3em;
-  color: rgba(255, 255, 255, 0.5);
+  background: var(--brass);
+  transition: width 0.25s ease-out;
 }
 
+.loader p {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: rgba(232, 227, 215, 0.42);
+}

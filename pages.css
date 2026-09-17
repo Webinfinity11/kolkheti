@@ -1,18 +1,26 @@
-/* Shared shell for the catalogue pages (artists.html, jewelry.html).
-   The intro animation keeps its own style.css — only the type scale, the
-   palette and the gold accent are meant to read as the same house. */
+/* Catalogue pages (artists.html, jewelry.html).
+   The reference is a gallery wall, not a product grid: works hung at uneven
+   heights, each with a small printed label under it, and almost no colour
+   besides the paper, the dark and one brass accent. */
 
 *,
 *::before,
 *::after { box-sizing: border-box; }
 
 :root {
-  --ink: #0a0908;
-  --paper: #d8d2c4;
-  --muted: #8a8377;
-  --gold: #f6e3b4;
-  --rule: rgba(216, 210, 196, 0.14);
-  --gutter: clamp(18px, 4vw, 52px);
+  --ink: #08090b;
+  --ink-2: #0e1013;
+  --paper: #e8e3d7;
+  --muted: #7f7a70;
+  --brass: #c8a86a;
+  --rule: rgba(232, 227, 215, 0.13);
+
+  --display: "Noto Serif Georgian", "Playfair Display", Georgia, serif;
+  --body: "Noto Sans Georgian", "Segoe UI", system-ui, sans-serif;
+  --mark: "Playfair Display", Georgia, serif;
+
+  --gutter: clamp(20px, 5vw, 56px);
+  --measure: 1000px;
 }
 
 html { scroll-behavior: smooth; }
@@ -21,9 +29,10 @@ body {
   margin: 0;
   background: var(--ink);
   color: var(--paper);
-  font-family: "Noto Sans Georgian", "Segoe UI", system-ui, sans-serif;
+  font-family: var(--body);
   font-size: 14px;
-  line-height: 1.7;
+  font-weight: 300;
+  line-height: 1.75;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -38,9 +47,17 @@ body {
 a { color: inherit; }
 
 .wrap {
-  max-width: 980px;
+  max-width: var(--measure);
   margin: 0 auto;
   padding: 0 var(--gutter);
+}
+
+/* Small tracked-out label type — used for numbers, media lines, nav */
+.label {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
 }
 
 /* ---------- Header ---------- */
@@ -49,7 +66,7 @@ a { color: inherit; }
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(10, 9, 8, 0.82);
+  background: rgba(8, 9, 11, 0.86);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--rule);
 }
@@ -58,31 +75,32 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  height: 58px;
+  gap: 20px;
+  height: 62px;
 }
 
 .wordmark {
-  font: 500 clamp(13px, 1.9vw, 16px)/1 "Playfair Display", Georgia, serif;
-  letter-spacing: 0.22em;
-  color: var(--gold);
+  font: 500 clamp(12px, 1.8vw, 15px)/1 var(--mark);
+  letter-spacing: 0.3em;
+  color: var(--paper);
   text-decoration: none;
   white-space: nowrap;
 }
 
 .site-nav {
   display: flex;
-  gap: clamp(15px, 2.4vw, 30px);
+  gap: clamp(16px, 3vw, 34px);
 }
 
 .site-nav a {
   position: relative;
-  padding: 6px 0;
-  font-size: 13px;
-  letter-spacing: 0.12em;
+  padding: 5px 0;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
   text-decoration: none;
   color: var(--muted);
-  transition: color 0.35s ease;
+  transition: color 0.4s ease;
 }
 .site-nav a::after {
   content: "";
@@ -91,214 +109,217 @@ a { color: inherit; }
   bottom: 0;
   width: 100%;
   height: 1px;
-  background: var(--gold);
+  background: var(--brass);
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.site-nav a:hover,
-.site-nav a[aria-current="page"] { color: var(--paper); }
+.site-nav a:hover { color: var(--paper); }
+.site-nav a[aria-current="page"] { color: var(--brass); }
 .site-nav a:hover::after,
 .site-nav a[aria-current="page"]::after {
   transform: scaleX(1);
   transform-origin: left;
 }
 
-/* ---------- Page opening ---------- */
+/* ---------- Opening plate ----------
+   Reads like the introductory panel at the entrance of a room. */
 
-.opening {
-  padding: clamp(44px, 9vh, 92px) 0 clamp(34px, 6vh, 62px);
-  border-bottom: 1px solid var(--rule);
+.plate {
+  padding: clamp(64px, 16vh, 168px) 0 clamp(44px, 9vh, 96px);
 }
 
-.eyebrow {
-  margin: 0 0 14px;
-  font-size: 10.5px;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  color: var(--gold);
+.plate__no {
+  display: block;
+  margin-bottom: clamp(20px, 4vh, 38px);
+  color: var(--brass);
 }
 
-.opening h1 {
+.plate h1 {
   margin: 0;
-  max-width: 16ch;
-  font-weight: 400;
-  font-size: clamp(29px, 5vw, 52px);
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  max-width: 14ch;
+  font: 400 clamp(38px, 8vw, 88px)/1.02 var(--display);
+  letter-spacing: -0.02em;
 }
 
-.opening p {
-  margin: 20px 0 0;
-  max-width: 52ch;
+.plate__rule {
+  height: 1px;
+  margin: clamp(28px, 5vh, 52px) 0 clamp(22px, 4vh, 36px);
+  background: var(--rule);
+}
+
+.plate p {
+  margin: 0;
+  max-width: 46ch;
   color: var(--muted);
 }
 
-/* ---------- Block grid ----------
-   Two columns on a desktop, one on a phone. Cards stretch to the row height
-   so the buttons line up even when the texts differ in length. */
+/* ---------- The wall ----------
+   Two columns, every second work hung lower, frames at different heights —
+   the irregularity is the point. */
 
-.blocks {
-  padding: clamp(32px, 6vh, 68px) 0 clamp(38px, 7vh, 80px);
+.wall {
+  padding: clamp(24px, 5vh, 56px) 0 clamp(64px, 12vh, 132px);
 }
 
-.blocks__grid {
+.wall__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(30px, 4.5vw, 54px) clamp(20px, 3vw, 40px);
+  align-items: start;
+  gap: clamp(52px, 9vh, 104px) clamp(30px, 5vw, 68px);
 }
 
 @media (min-width: 820px) {
-  .blocks__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wall__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .work:nth-child(even) { margin-top: clamp(36px, 6vw, 88px); }
 }
 
-/* One column would otherwise hand a tablet a single 700px frame — wider than
-   either column gets on a desktop. Cap it and centre it instead. */
 @media (max-width: 819px) {
-  .block {
+  .work {
     width: 100%;
-    max-width: 430px;
+    max-width: 420px;
     margin-inline: auto;
   }
 }
 
-.block {
-  display: flex;
-  flex-direction: column;
-}
+.work { margin: 0; }
 
-/* Push the button to the card's bottom edge regardless of text length */
-.block__body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-.block__cta { margin-top: auto; padding-top: 22px; }
-
-.block__media {
+.work__frame {
   position: relative;
-  aspect-ratio: var(--ar, 1 / 1);
+  aspect-ratio: var(--ar, 4 / 5);
   overflow: hidden;
-  border: 1px solid var(--rule);
   background:
-    radial-gradient(120% 90% at 30% 15%, var(--b, #241d15), transparent 68%),
-    linear-gradient(155deg, var(--a, #1a1510), #060505 78%);
-  transition: border-color 0.5s ease;
+    radial-gradient(130% 100% at 32% 18%, var(--b, #1c1a17), transparent 70%),
+    linear-gradient(158deg, var(--a, #131211), #060607 80%);
+  box-shadow: 0 0 0 1px var(--rule);
+  transition: box-shadow 0.6s ease;
 }
-.block:hover .block__media { border-color: rgba(246, 227, 180, 0.4); }
+.work:hover .work__frame { box-shadow: 0 0 0 1px rgba(200, 168, 106, 0.45); }
 
-/* Placeholder mark — replace the whole .block__media content with an <img>
-   once the real photography lands; the frame and ratio stay as they are. */
-.block__ph {
+/* Placeholder mark — replace the whole .work__frame content with an <img>
+   (object-fit: cover) once the photography lands. --a / --b only tint the
+   placeholder and go with it. */
+.work__ph {
   position: absolute;
   inset: 0;
   display: grid;
   place-content: center;
-  font: 500 clamp(26px, 3.4vw, 42px)/1 "Playfair Display", Georgia, serif;
-  letter-spacing: 0.16em;
-  color: rgba(246, 227, 180, 0.28);
-  transition: color 0.5s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  font: 400 clamp(22px, 3vw, 34px)/1 var(--mark);
+  letter-spacing: 0.22em;
+  color: rgba(200, 168, 106, 0.26);
+  transition: color 0.6s ease, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.block:hover .block__ph {
-  color: rgba(246, 227, 180, 0.55);
-  transform: scale(1.05);
-}
-
-.block__index {
-  display: block;
-  margin: 18px 0 10px;
-  font-size: 10.5px;
-  letter-spacing: 0.32em;
-  color: var(--gold);
+.work:hover .work__ph {
+  color: rgba(200, 168, 106, 0.5);
+  transform: scale(1.04);
 }
 
-.block__name {
-  margin: 0;
-  font: 400 clamp(20px, 2.3vw, 27px)/1.2 "Playfair Display", Georgia, serif;
-  letter-spacing: 0.01em;
+/* The printed label under each work */
+.work__label {
+  margin-top: 16px;
+  padding-top: 13px;
+  border-top: 1px solid var(--rule);
 }
-.block__name span {
+
+.work__no {
   display: block;
-  font-size: 0.62em;
-  letter-spacing: 0.06em;
   color: var(--muted);
 }
 
-.block__meta {
+.work__name {
+  margin: 9px 0 0;
+  font: 400 clamp(19px, 2.1vw, 25px)/1.3 var(--display);
+  letter-spacing: -0.005em;
+}
+
+.work__medium {
+  margin: 7px 0 0;
+  color: var(--brass);
+}
+
+.work__note {
   margin: 13px 0 0;
-  font-size: 11.5px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-.block__text {
-  margin: 14px 0 0;
-  max-width: 44ch;
+  max-width: 40ch;
   color: var(--muted);
 }
 
-/* Reveal on scroll — the class is only added by pages.js, so the blocks stay
-   visible if JS never runs. */
-.will-reveal .block__media,
-.will-reveal .block__body {
-  opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.9s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+/* "ნახვა" — a line that extends on hover, not a boxed button */
+.view {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--body);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--paper);
+  cursor: pointer;
+  transition: color 0.4s ease;
 }
-.will-reveal .block__body { transition-delay: 0.12s; }
-.block.is-in .block__media,
-.block.is-in .block__body {
+.view::after {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--brass);
+  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.view:hover { color: var(--brass); }
+.view:hover::after { width: 44px; }
+
+/* Reveal on scroll — the class is only added by pages.js, so the works stay
+   visible if JS never runs. */
+.will-reveal .work__frame,
+.will-reveal .work__label {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 1s ease, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.will-reveal .work__label { transition-delay: 0.14s; }
+.work.is-in .work__frame,
+.work.is-in .work__label {
   opacity: 1;
   transform: none;
 }
 
-/* ---------- Buttons ---------- */
+/* ---------- Closing plate ---------- */
 
-.btn {
-  display: inline-block;
-  padding: 11px 26px;
-  border: 1px solid rgba(246, 227, 180, 0.42);
-  background: none;
-  font: inherit;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--gold);
-  cursor: pointer;
-  transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
-}
-.btn:hover {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--ink);
-}
-
-/* ---------- Enquiry strip ---------- */
-
-.enquire {
-  padding: clamp(40px, 7vh, 82px) 0;
+.closing {
+  padding: clamp(56px, 11vh, 124px) 0;
   border-top: 1px solid var(--rule);
-  text-align: center;
+  background: var(--ink-2);
 }
-.enquire h2 {
-  margin: 0 0 14px;
-  font: 500 clamp(19px, 2.7vw, 27px)/1.3 "Playfair Display", Georgia, serif;
+.closing__in {
+  display: grid;
+  gap: clamp(22px, 4vw, 56px);
 }
-.enquire p {
-  margin: 0 auto 30px;
-  max-width: 46ch;
+@media (min-width: 760px) {
+  .closing__in {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+}
+.closing h2 {
+  margin: 12px 0 0;
+  max-width: 18ch;
+  font: 400 clamp(24px, 3.6vw, 38px)/1.2 var(--display);
+}
+.closing p {
+  margin: 14px 0 0;
+  max-width: 42ch;
   color: var(--muted);
 }
 
 /* ---------- Footer ---------- */
 
 .site-foot {
-  padding: 26px 0 34px;
+  padding: 26px 0 36px;
   border-top: 1px solid var(--rule);
-  font-size: 12px;
-  letter-spacing: 0.08em;
   color: var(--muted);
 }
 .site-foot__in {
@@ -311,74 +332,75 @@ a { color: inherit; }
 .site-foot a:hover { color: var(--paper); }
 
 /* ---------- Detail overlay ----------
-   What the "ნახვა" button opens today. Swap the button's href for a real
-   per-artist page later and this can go without touching the blocks. */
+   What "ნახვა" opens today. Swap the button for a link to a real per-work
+   page later and this can go without touching the wall. */
 
 .detail {
   position: fixed;
   inset: 0;
   z-index: 40;
   display: grid;
-  grid-template-rows: 1fr auto;
-  gap: 22px;
-  padding: clamp(18px, 5vh, 56px) var(--gutter) clamp(24px, 5vh, 52px);
-  background: rgba(6, 5, 5, 0.96);
-  backdrop-filter: blur(8px);
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: clamp(16px, 3vh, 30px);
+  padding: clamp(48px, 8vh, 84px) var(--gutter) clamp(26px, 5vh, 54px);
+  background: rgba(6, 7, 8, 0.97);
+  backdrop-filter: blur(10px);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.45s ease, visibility 0.45s;
+  transition: opacity 0.5s ease, visibility 0.5s;
 }
 .detail[data-open="true"] { opacity: 1; visibility: visible; }
 
-.detail__stage {
+.detail__frame {
   position: relative;
   min-height: 0;
-  border: 1px solid var(--rule);
+  box-shadow: 0 0 0 1px var(--rule);
   background:
-    radial-gradient(120% 90% at 30% 15%, var(--b, #241d15), transparent 68%),
-    linear-gradient(155deg, var(--a, #1a1510), #060505 78%);
+    radial-gradient(130% 100% at 32% 18%, var(--b, #1c1a17), transparent 70%),
+    linear-gradient(158deg, var(--a, #131211), #060607 80%);
 }
-.detail__stage span {
+.detail__frame span {
   position: absolute;
   inset: 0;
   display: grid;
   place-content: center;
-  font: 500 clamp(44px, 9vw, 96px)/1 "Playfair Display", Georgia, serif;
-  letter-spacing: 0.16em;
-  color: rgba(246, 227, 180, 0.32);
+  font: 400 clamp(38px, 8vw, 78px)/1 var(--mark);
+  letter-spacing: 0.22em;
+  color: rgba(200, 168, 106, 0.3);
 }
 
-.detail__cap { text-align: center; }
-.detail__cap strong {
+.detail__label { text-align: center; }
+.detail__label strong {
   display: block;
-  font: 500 clamp(17px, 2.6vw, 23px)/1.4 "Playfair Display", Georgia, serif;
-  letter-spacing: 0.03em;
+  font: 400 clamp(19px, 2.6vw, 26px)/1.3 var(--display);
 }
-.detail__cap small {
+.detail__label small {
   display: block;
   margin-top: 8px;
+  max-width: 54ch;
+  margin-inline: auto;
   font-size: 12.5px;
   color: var(--muted);
 }
 
 .detail__close {
   position: absolute;
-  top: 14px;
-  right: 16px;
-  width: 42px;
-  height: 42px;
+  top: 16px;
+  right: var(--gutter);
+  padding: 8px 0;
   border: 0;
   background: none;
-  color: var(--paper);
-  font-size: 26px;
-  line-height: 1;
+  font-family: var(--body);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
   cursor: pointer;
-  opacity: 0.65;
-  transition: opacity 0.3s ease;
+  transition: color 0.35s ease;
 }
-.detail__close:hover { opacity: 1; }
+.detail__close:hover { color: var(--paper); }
 
 :focus-visible {
-  outline: 1px solid var(--gold);
-  outline-offset: 4px;
+  outline: 1px solid var(--brass);
+  outline-offset: 5px;
 }
