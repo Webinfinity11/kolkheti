@@ -46,8 +46,11 @@ html, body {
   fill: transparent;
   pointer-events: none;
 }
+/* Only live at the end of the scroll, so dragging the fleece into view can
+   claim the gesture from the page scroll without blocking it earlier. */
 .stage.is-end .hit {
   pointer-events: all;
+  touch-action: none;
 }
 
 /* Hints */
@@ -83,13 +86,6 @@ html, body {
   51%  { transform: scaleY(1); transform-origin: bottom; }
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
-
-.hint--end {
-  top: 28px;
-  opacity: 0;
-}
-.stage.is-end .hint--end { opacity: 1; }
-.stage.is-revealed .hint--end { opacity: 0; }
 
 /* Loader */
 .loader {

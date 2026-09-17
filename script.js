@@ -42,22 +42,13 @@
     });
   }
 
-  // ---------- Canvas fit ----------
+  // ---------- Canvas fit (object-fit: cover — always fills the stage) ----------
   // Vertical crop split: 0 = keep the top edge (crop only bottom), 0.5 = center.
   // Low value keeps the compass in the top-left corner visible.
   const ALIGN_Y = 0.5;
 
-  // "cover" crops the 16:9 frames to fill the stage, which eats the sides on a
-  // phone (the Georgia map and the fleece lose their edges). Below this stage
-  // aspect ratio we letterbox instead, so the whole frame always stays visible.
-  const CONTAIN_BELOW_ASPECT = 1.2;
-
-  // Works in CSS px or device px — only the aspect ratio picks the branch.
-  function fitScale(w, h) {
-    return w / h < CONTAIN_BELOW_ASPECT
-      ? Math.min(w / FRAME_W, h / FRAME_H)
-      : Math.max(w / FRAME_W, h / FRAME_H);
-  }
+  // Works in CSS px or device px alike.
+  const fitScale = (w, h) => Math.max(w / FRAME_W, h / FRAME_H);
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -66,14 +57,15 @@
     canvas.width = Math.round(sw * dpr);
     canvas.height = Math.round(sh * dpr);
 
-    // Make the SVG overlay crop (or letterbox) exactly like the canvas
+    // Make the SVG overlay crop exactly like the canvas
     const s = fitScale(sw, sh);
     const vw = sw / s;
     const vh = sh / s;
     overlay.setAttribute("viewBox", `${(FRAME_W - vw) / 2} ${(FRAME_H - vh) * ALIGN_Y} ${vw} ${vh}`);
 
-    // Keep the wordmark at a readable on-screen size in both fit modes
-    const brandPx = Math.max(19, Math.min(sw * 0.055, 68));
+    // Cover zooms hard on a phone, so size the wordmark off the stage instead
+    // of leaving it at a fixed 68 frame units (~80px on a 390px wide screen).
+    const brandPx = Math.max(20, Math.min(sw * 0.08, 68));
     brand.style.fontSize = (brandPx / s).toFixed(2) + "px";
     brand.style.strokeWidth = (brandPx / s * 0.103).toFixed(2) + "px";
 
@@ -117,19 +109,19 @@
 
     const atEnd = index >= FRAME_COUNT - 3;
     stage.classList.toggle("is-end", atEnd);
-    if (!atEnd) tapRevealed = false;
 
     updateSpotlight(atEnd);
     requestAnimationFrame(tick);
   }
 
-  // ---------- Cursor spotlight reveal ----------
-  // Screen px — shrinks with the stage so it doesn't swallow a narrow window
-  const spotlightR = () => Math.max(150, Math.min(stage.clientWidth * 0.2, 260));
+  // ---------- Spotlight reveal ----------
+  // The fleece only shows inside a soft circle that follows the cursor on
+  // desktop and the finger while it stays pressed on touch — same gesture,
+  // different input. Screen px, scaled down so it can't swallow a phone screen.
+  const spotlightR = () => Math.max(110, Math.min(stage.clientWidth * 0.32, 260));
   const spot = document.getElementById("spot");
-  const mouse = { x: -999, y: -999, inside: false };
+  const pointer = { x: -999, y: -999, active: false };
   const smooth = { x: -999, y: -999, r: 0 };
-  let tapRevealed = false;
 
   function toSvgPoint(clientX, clientY) {
     const pt = overlay.createSVGPoint();
@@ -143,18 +135,17 @@
     if (!ctm) return;
     const pxToSvg = 1 / ctm.a;
 
-    let targetR = 0;
-    if (atEnd && tapRevealed) targetR = 2000;
-    else if (atEnd && mouse.inside) targetR = spotlightR() * pxToSvg;
+    const on = atEnd && pointer.active;
+    const targetR = on ? spotlightR() * pxToSvg : 0;
 
-    if (mouse.inside) {
-      const p = toSvgPoint(mouse.x, mouse.y);
+    if (pointer.active) {
+      const p = toSvgPoint(pointer.x, pointer.y);
       // Jump on first entry so the circle doesn't fly in from off-screen
       if (smooth.r < 1) { smooth.x = p.x; smooth.y = p.y; }
-      smooth.x += (p.x - smooth.x) * 0.1;
-      smooth.y += (p.y - smooth.y) * 0.1;
+      smooth.x += (p.x - smooth.x) * 0.18;
+      smooth.y += (p.y - smooth.y) * 0.18;
     }
-    smooth.r += (targetR - smooth.r) * (tapRevealed ? 0.06 : 0.12);
+    smooth.r += (targetR - smooth.r) * 0.12;
     if (smooth.r < 0.5 && targetR === 0) smooth.r = 0;
 
     spot.setAttribute("cx", smooth.x.toFixed(1));
@@ -163,22 +154,41 @@
     stage.classList.toggle("is-revealed", smooth.r > 5);
   }
 
+  // Desktop: plain hover over the stage
   stage.addEventListener("pointermove", (e) => {
     if (e.pointerType !== "mouse") return;
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-    mouse.inside = true;
+    pointer.x = e.clientX;
+    pointer.y = e.clientY;
+    pointer.active = true;
   });
-  stage.addEventListener("pointerleave", () => { mouse.inside = false; });
+  stage.addEventListener("pointerleave", (e) => {
+    if (e.pointerType !== "mouse") return;
+    pointer.active = false;
+  });
 
-  // Touch: tap the map to reveal the whole fleece
-  hit.addEventListener("pointerup", (e) => {
+  // Touch: press on the map and drag — the fleece follows the finger and fades
+  // back out on release. Pointer capture keeps the drag alive outside the
+  // outline, and #hit sets touch-action:none so dragging doesn't scroll.
+  hit.addEventListener("pointerdown", (e) => {
     if (e.pointerType === "mouse") return;
-    const p = toSvgPoint(e.clientX, e.clientY);
-    smooth.x = p.x;
-    smooth.y = p.y;
-    tapRevealed = !tapRevealed;
+    hit.setPointerCapture(e.pointerId);
+    pointer.x = e.clientX;
+    pointer.y = e.clientY;
+    pointer.active = true;
+    e.preventDefault();
   });
+  hit.addEventListener("pointermove", (e) => {
+    if (e.pointerType === "mouse" || !pointer.active) return;
+    pointer.x = e.clientX;
+    pointer.y = e.clientY;
+    e.preventDefault();
+  });
+  const endTouch = (e) => {
+    if (e.pointerType === "mouse") return;
+    pointer.active = false;
+  };
+  hit.addEventListener("pointerup", endTouch);
+  hit.addEventListener("pointercancel", endTouch);
 
   // ---------- Init ----------
   window.addEventListener("resize", resize);
