@@ -6,7 +6,7 @@
 <title>საქართველო — სამყაროს დაბადებიდან</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Noto+Sans+Georgian:wght@300;400&display=swap">
 <link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
@@ -61,7 +61,14 @@
     <div class="hint hint--start" id="hintStart">
       <span>სქროლი</span>
       <i></i>
-    </div>  </div>
+    </div>
+
+    <!-- Fades in once the scroll reaches the map (see .stage.is-end in style.css) -->
+    <nav class="enter" aria-label="მთავარი მენიუ">
+      <a href="artists.html">მხატვრები</a>
+      <a href="jewelry.html">საიუველირო</a>
+    </nav>
+  </div>
 </main>
 
 <script src="script.js?v=12"></script>

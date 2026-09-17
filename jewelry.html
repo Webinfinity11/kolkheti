@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>საიუველირო — MAISON KOLKHETI</title>
+<meta name="description" content="MAISON KOLKHETI-ს საიუველირო კოლექციები — ხელით ნაკეთები ნაწარმი ოქროსა და ვერცხლში.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Noto+Sans+Georgian:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="pages.css?v=1">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap site-head__in">
+    <a class="wordmark" href="index.html">MAISON KOLKHETI</a>
+    <nav class="site-nav" aria-label="მთავარი მენიუ">
+      <a href="artists.html">მხატვრები</a>
+      <a href="jewelry.html" aria-current="page">საიუველირო</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="opening">
+    <div class="wrap">
+      <p class="eyebrow">კოლექცია</p>
+      <h1>საიუველირო</h1>
+      <p>
+        ორი კოლექცია, ერთი წყარო — კოლხური ოქრომჭედლობა. თითოეული ნაწარმი ხელით
+        სრულდება თბილისურ სახელოსნოში, ტრადიციული ტექნიკებით.
+      </p>
+    </div>
+  </section>
+
+  <!-- Two collections, same alternating treatment as the artists page. -->
+  <section class="blocks">
+    <div class="wrap">
+
+      <article class="block" style="--a:#2b1f0e; --b:#5a4319; --ar:1 / 1">
+        <div class="block__media"><span class="block__ph">I</span></div>
+        <div class="block__body">
+          <span class="block__index">კოლექცია 01</span>
+          <h2 class="block__name">ოქროს <span>საწმისი</span></h2>
+          <p class="block__meta">585° ოქრო · ხელით ჭედვა</p>
+          <p class="block__text">
+            კოლექციის ცენტრში საწმისის ქერცლის მოტივია — თითოეული ელემენტი ცალკე
+            იჭედება და ხელით ეწყობა. საყურეები, მედალიონები და სამაჯურები,
+            თითოეული ერთეული ნომრით.
+          </p>
+          <p class="block__cta"><button class="btn" type="button" data-view>ნახვა</button></p>
+        </div>
+      </article>
+
+      <article class="block block--flip" style="--a:#1c2226; --b:#38474f; --ar:1 / 1">
+        <div class="block__media"><span class="block__ph">II</span></div>
+        <div class="block__body">
+          <span class="block__index">კოლექცია 02</span>
+          <h2 class="block__name">თანავარსკვლავედი <span>ვერცხლში</span></h2>
+          <p class="block__meta">925° ვერცხლი, თეთრი ქვები · ლიმიტირებული</p>
+          <p class="block__text">
+            საქართველოს რუკა ვარსკვლავებად — იგივე მოტივი, რაც საიტის შესასვლელში.
+            ყელსაბამები და ბეჭდები, სადაც თითოეული ქვა ერთ ქალაქს აღნიშნავს.
+          </p>
+          <p class="block__cta"><button class="btn" type="button" data-view>ნახვა</button></p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="enquire">
+    <div class="wrap">
+      <h2>ინდივიდუალური შეკვეთა</h2>
+      <p>
+        ნაწარმი ხელმისაწვდომია სახელოსნოში და შეკვეთით. ფასებსა და ვადებზე
+        ინფორმაციისთვის მოგვწერეთ.
+      </p>
+      <a class="btn" href="mailto:info@kolkheti.ge">დაგვიკავშირდით</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap site-foot__in">
+    <span>© 2026 MAISON KOLKHETI</span>
+    <a href="index.html">მთავარი</a>
+  </div>
+</footer>
+
+<div class="detail" id="detail" data-open="false" role="dialog" aria-modal="true" aria-label="კოლექციის დათვალიერება">
+  <button class="detail__close" type="button" aria-label="დახურვა">&times;</button>
+  <div class="detail__stage"><span></span></div>
+  <div class="detail__cap">
+    <strong></strong>
+    <small></small>
+  </div>
+</div>
+
+<script src="pages.js?v=1"></script>
+</body>
+</html>
