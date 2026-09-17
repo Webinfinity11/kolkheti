@@ -9,14 +9,22 @@ html, body {
   font-family: "Noto Sans Georgian", "Segoe UI", system-ui, sans-serif;
 }
 
+/* Both heights are locked to a --vh that script.js re-measures only on a real
+   resize. A mobile address bar sliding in or out changes 100vh mid-scroll,
+   which re-laid out the track under the user and made the stage rock.
+   The vh fallbacks keep it working if the script never runs. */
+
 /* Scroll length = how "slow" the video plays while scrolling */
-.track { height: 700vh; }
+.track {
+  height: 700vh;
+  height: calc(var(--vh, 1vh) * 700);
+}
 
 .stage {
   position: sticky;
   top: 0;
   height: 100vh;
-  height: 100svh;
+  height: calc(var(--vh, 1vh) * 100);
   overflow: hidden;
 }
 
@@ -53,22 +61,22 @@ html, body {
   pointer-events: all;
 }
 
-/* Way into the catalogue — only once the map is on screen, so it never
-   competes with the animation. */
+/* Way into the catalogue — top right, and only once the map is on screen, so
+   it never competes with the animation. */
 .enter {
   position: absolute;
-  left: 50%;
-  bottom: clamp(26px, 6vh, 54px);
-  transform: translate(-50%, 14px);
+  top: clamp(18px, 3.4vh, 34px);
+  right: clamp(18px, 4vw, 48px);
   display: flex;
-  gap: clamp(22px, 6vw, 56px);
+  gap: clamp(18px, 3vw, 40px);
   opacity: 0;
+  transform: translateY(-10px);
   pointer-events: none;
   transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .stage.is-end .enter {
   opacity: 1;
-  transform: translate(-50%, 0);
+  transform: none;
   pointer-events: auto;
 }
 

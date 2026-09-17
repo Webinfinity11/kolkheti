@@ -134,33 +134,36 @@ a { color: inherit; }
   color: var(--muted);
 }
 
-/* ---------- Alternating blocks ----------
-   Every entry is one row: portrait on one side, text on the other. Odd rows
-   put the portrait left, even rows flip it right. On narrow screens they all
-   stack portrait-first, so the reading order never depends on the flip. */
+/* ---------- Block grid ----------
+   Two columns on a desktop, one on a phone. Cards stretch to the row height
+   so the buttons line up even when the texts differ in length. */
 
 .blocks {
-  padding: clamp(40px, 7vh, 88px) 0 clamp(20px, 4vh, 40px);
+  padding: clamp(40px, 7vh, 88px) 0 clamp(48px, 9vh, 104px);
+}
+
+.blocks__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(38px, 6vw, 76px) clamp(24px, 4vw, 56px);
+}
+
+@media (min-width: 820px) {
+  .blocks__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 .block {
-  display: grid;
-  gap: clamp(22px, 4vw, 68px);
-  grid-template-columns: 1fr;
-  align-items: center;
-  padding: clamp(34px, 6vh, 72px) 0;
-  border-bottom: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
 }
-.block:last-child { border-bottom: 0; }
 
-@media (min-width: 860px) {
-  .block { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); }
-  .block__media { grid-column: 1; grid-row: 1; }
-  .block__body  { grid-column: 2; grid-row: 1; }
-  /* Flip: portrait moves to the right half */
-  .block--flip .block__media { grid-column: 2; }
-  .block--flip .block__body  { grid-column: 1; }
+/* Push the button to the card's bottom edge regardless of text length */
+.block__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
+.block__cta { margin-top: auto; padding-top: 26px; }
 
 .block__media {
   position: relative;
@@ -193,7 +196,7 @@ a { color: inherit; }
 
 .block__index {
   display: block;
-  margin-bottom: 14px;
+  margin: 22px 0 12px;
   font-size: 11px;
   letter-spacing: 0.32em;
   color: var(--gold);
@@ -201,7 +204,7 @@ a { color: inherit; }
 
 .block__name {
   margin: 0;
-  font: 400 clamp(26px, 4.2vw, 46px)/1.15 "Playfair Display", Georgia, serif;
+  font: 400 clamp(25px, 3.2vw, 38px)/1.15 "Playfair Display", Georgia, serif;
   letter-spacing: 0.01em;
 }
 .block__name span {
@@ -224,8 +227,6 @@ a { color: inherit; }
   max-width: 48ch;
   color: var(--muted);
 }
-
-.block__cta { margin-top: 28px; }
 
 /* Reveal on scroll — the class is only added by pages.js, so the blocks stay
    visible if JS never runs. */

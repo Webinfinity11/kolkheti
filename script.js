@@ -42,6 +42,22 @@
     });
   }
 
+  // ---------- Viewport lock ----------
+  // Mobile browsers change 100vh and fire resize every time the address bar
+  // slides away mid-scroll. That re-laid out the 700vh track under the user and
+  // rocked the whole stage, so pin the height in --vh and only re-measure on a
+  // real resize: a width change or an orientation flip.
+  let lockedH = window.innerHeight;
+  let lockedW = window.innerWidth;
+
+  function lockViewport() {
+    lockedH = window.innerHeight;
+    lockedW = window.innerWidth;
+    document.documentElement.style.setProperty("--vh", lockedH / 100 + "px");
+  }
+
+  lockViewport();
+
   // ---------- Canvas fit ----------
   // Vertical crop split: 0 = keep the top edge (crop only bottom), 0.5 = center.
   // Low value keeps the compass in the top-left corner visible.
@@ -127,7 +143,7 @@
 
   // ---------- Scroll -> frame ----------
   function progress() {
-    const max = track.offsetHeight - window.innerHeight;
+    const max = track.offsetHeight - lockedH;
     return max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
   }
 
@@ -234,7 +250,21 @@
   }, { passive: false });
 
   // ---------- Init ----------
-  window.addEventListener("resize", resize);
+  function onResize() {
+    // On a touch device a height-only change under a quarter of the viewport is
+    // browser chrome sliding, not a resize — ignore it so nothing re-lays out
+    // mid-scroll. A desktop window always gets the real resize.
+    const chrome = window.matchMedia("(hover: none)").matches
+      && window.innerWidth === lockedW
+      && Math.abs(window.innerHeight - lockedH) < lockedH * 0.25;
+    if (chrome) return;
+    lockViewport();
+    resize();
+    onScroll();
+  }
+
+  window.addEventListener("resize", onResize);
+  window.addEventListener("orientationchange", () => setTimeout(onResize, 120));
   window.addEventListener("scroll", onScroll, { passive: true });
 
   preload().then(() => {

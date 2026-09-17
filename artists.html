@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Noto+Sans+Georgian:wght@300;400;500&display=swap">
-<link rel="stylesheet" href="pages.css?v=1">
+<link rel="stylesheet" href="pages.css?v=2">
 </head>
 <body>
 
@@ -36,11 +36,10 @@
     </div>
   </section>
 
-  <!-- Six artists, portrait alternating left / right. Swap each .block__ph for
-       an <img> once the real portraits arrive; --a / --b only tint the
-       placeholder and can go with it. -->
+  <!-- Six artists, two per row on a desktop. Swap each .block__ph for an <img>
+       once the real portraits arrive; --a / --b only tint the placeholder. -->
   <section class="blocks">
-    <div class="wrap">
+    <div class="wrap blocks__grid">
 
       <article class="block" style="--a:#241a12; --b:#3a2a18">
         <div class="block__media"><span class="block__ph">I</span></div>
@@ -57,7 +56,7 @@
         </div>
       </article>
 
-      <article class="block block--flip" style="--a:#1b1f22; --b:#2e3a42">
+      <article class="block" style="--a:#1b1f22; --b:#2e3a42">
         <div class="block__media"><span class="block__ph">II</span></div>
         <div class="block__body">
           <span class="block__index">02</span>
@@ -85,7 +84,7 @@
         </div>
       </article>
 
-      <article class="block block--flip" style="--a:#1a1a24; --b:#2c2b45">
+      <article class="block" style="--a:#1a1a24; --b:#2c2b45">
         <div class="block__media"><span class="block__ph">IV</span></div>
         <div class="block__body">
           <span class="block__index">04</span>
@@ -113,7 +112,7 @@
         </div>
       </article>
 
-      <article class="block block--flip" style="--a:#15181a; --b:#26343a">
+      <article class="block" style="--a:#15181a; --b:#26343a">
         <div class="block__media"><span class="block__ph">VI</span></div>
         <div class="block__body">
           <span class="block__index">06</span>
@@ -159,6 +158,6 @@
   </div>
 </div>
 
-<script src="pages.js?v=1"></script>
+<script src="pages.js?v=2"></script>
 </body>
 </html>
