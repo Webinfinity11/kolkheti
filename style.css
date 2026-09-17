@@ -7,23 +7,36 @@ html, body {
   background: #000;
   color: #d8d2c4;
   font-family: "Noto Sans Georgian", "Segoe UI", system-ui, sans-serif;
+  overscroll-behavior-y: none;
 }
 
-/* Both heights are locked to a --vh that script.js re-measures only on a real
-   resize. A mobile address bar sliding in or out changes 100vh mid-scroll,
-   which re-laid out the track under the user and made the stage rock.
+/* A mobile address bar sliding in and out changes 100vh mid-scroll. Two things
+   follow from that, and the stage needs to survive both:
+
+   1. The stage is fixed, not sticky. A sticky box has to be shorter than the
+      scrollport to stay pinned, so the moment the viewport shrank it started
+      scrolling with the page. Fixed is pinned to the top whatever happens.
+   2. Its height is the LARGEST viewport (lvh, or a --vh that script.js only
+      ever grows). Sizing to the current or the smallest viewport leaves a black
+      strip the instant the bar hides; sizing to the largest means the bar can
+      only ever cover the bottom edge, and nothing on screen moves.
+
    The vh fallbacks keep it working if the script never runs. */
 
 /* Scroll length = how "slow" the video plays while scrolling */
 .track {
   height: 700vh;
+  height: 700lvh;
   height: calc(var(--vh, 1vh) * 700);
 }
 
 .stage {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
   height: 100vh;
+  height: 100lvh;
   height: calc(var(--vh, 1vh) * 100);
   overflow: hidden;
 }

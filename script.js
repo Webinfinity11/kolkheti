@@ -43,20 +43,20 @@
   }
 
   // ---------- Viewport lock ----------
-  // Mobile browsers change 100vh and fire resize every time the address bar
-  // slides away mid-scroll. That re-laid out the 700vh track under the user and
-  // rocked the whole stage, so pin the height in --vh and only re-measure on a
-  // real resize: a width change or an orientation flip.
-  let lockedH = window.innerHeight;
+  // --vh is the tallest viewport we have seen at this width — the largest the
+  // page gets once a mobile address bar is out of the way. It only ever grows,
+  // so a bar sliding in and out can never resize the stage mid-scroll; a real
+  // resize (width change or orientation flip) resets the measurement.
+  let lockedH = 0;
   let lockedW = window.innerWidth;
 
-  function lockViewport() {
-    lockedH = window.innerHeight;
+  function lockViewport(reset) {
+    lockedH = reset ? window.innerHeight : Math.max(lockedH, window.innerHeight);
     lockedW = window.innerWidth;
     document.documentElement.style.setProperty("--vh", lockedH / 100 + "px");
   }
 
-  lockViewport();
+  lockViewport(true);
 
   // ---------- Canvas fit ----------
   // Vertical crop split: 0 = keep the top edge (crop only bottom), 0.5 = center.
@@ -251,14 +251,15 @@
 
   // ---------- Init ----------
   function onResize() {
-    // On a touch device a height-only change under a quarter of the viewport is
-    // browser chrome sliding, not a resize — ignore it so nothing re-lays out
-    // mid-scroll. A desktop window always gets the real resize.
-    const chrome = window.matchMedia("(hover: none)").matches
-      && window.innerWidth === lockedW
-      && Math.abs(window.innerHeight - lockedH) < lockedH * 0.25;
-    if (chrome) return;
-    lockViewport();
+    const widthChanged = window.innerWidth !== lockedW;
+    const touch = window.matchMedia("(hover: none)").matches;
+
+    // On touch, same width and a shorter viewport is browser chrome sliding in,
+    // not a resize. Leave everything exactly where it is. A desktop window
+    // always gets the exact new height.
+    if (touch && !widthChanged && window.innerHeight <= lockedH) return;
+
+    lockViewport(widthChanged || !touch);
     resize();
     onScroll();
   }
