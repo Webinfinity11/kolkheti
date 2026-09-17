@@ -11,6 +11,7 @@
   const stage = document.querySelector(".stage");
   const overlay = document.getElementById("overlay");
   const hit = document.getElementById("hit");
+  const brand = document.querySelector(".brand");
   const hintStart = document.getElementById("hintStart");
   const loader = document.getElementById("loader");
   const loaderBar = document.getElementById("loaderBar");
@@ -41,10 +42,22 @@
     });
   }
 
-  // ---------- Canvas (object-fit: cover) ----------
+  // ---------- Canvas fit ----------
   // Vertical crop split: 0 = keep the top edge (crop only bottom), 0.5 = center.
   // Low value keeps the compass in the top-left corner visible.
   const ALIGN_Y = 0.5;
+
+  // "cover" crops the 16:9 frames to fill the stage, which eats the sides on a
+  // phone (the Georgia map and the fleece lose their edges). Below this stage
+  // aspect ratio we letterbox instead, so the whole frame always stays visible.
+  const CONTAIN_BELOW_ASPECT = 1.2;
+
+  // Works in CSS px or device px — only the aspect ratio picks the branch.
+  function fitScale(w, h) {
+    return w / h < CONTAIN_BELOW_ASPECT
+      ? Math.min(w / FRAME_W, h / FRAME_H)
+      : Math.max(w / FRAME_W, h / FRAME_H);
+  }
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -53,11 +66,16 @@
     canvas.width = Math.round(sw * dpr);
     canvas.height = Math.round(sh * dpr);
 
-    // Make the SVG overlay crop exactly like the canvas
-    const s = Math.max(sw / FRAME_W, sh / FRAME_H);
+    // Make the SVG overlay crop (or letterbox) exactly like the canvas
+    const s = fitScale(sw, sh);
     const vw = sw / s;
     const vh = sh / s;
     overlay.setAttribute("viewBox", `${(FRAME_W - vw) / 2} ${(FRAME_H - vh) * ALIGN_Y} ${vw} ${vh}`);
+
+    // Keep the wordmark at a readable on-screen size in both fit modes
+    const brandPx = Math.max(19, Math.min(sw * 0.055, 68));
+    brand.style.fontSize = (brandPx / s).toFixed(2) + "px";
+    brand.style.strokeWidth = (brandPx / s * 0.103).toFixed(2) + "px";
 
     drawn = -1;
     draw(Math.round(current));
@@ -68,7 +86,7 @@
     if (!img || !img.complete || !img.naturalWidth || index === drawn) return;
     const cw = canvas.width;
     const ch = canvas.height;
-    const scale = Math.max(cw / FRAME_W, ch / FRAME_H);
+    const scale = fitScale(cw, ch);
     const w = FRAME_W * scale;
     const h = FRAME_H * scale;
     ctx.imageSmoothingEnabled = true;
@@ -106,7 +124,8 @@
   }
 
   // ---------- Cursor spotlight reveal ----------
-  const SPOTLIGHT_R = 260;   // screen px
+  // Screen px — shrinks with the stage so it doesn't swallow a narrow window
+  const spotlightR = () => Math.max(150, Math.min(stage.clientWidth * 0.2, 260));
   const spot = document.getElementById("spot");
   const mouse = { x: -999, y: -999, inside: false };
   const smooth = { x: -999, y: -999, r: 0 };
@@ -126,7 +145,7 @@
 
     let targetR = 0;
     if (atEnd && tapRevealed) targetR = 2000;
-    else if (atEnd && mouse.inside) targetR = SPOTLIGHT_R * pxToSvg;
+    else if (atEnd && mouse.inside) targetR = spotlightR() * pxToSvg;
 
     if (mouse.inside) {
       const p = toSvgPoint(mouse.x, mouse.y);
