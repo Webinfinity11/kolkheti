@@ -152,6 +152,16 @@ a { color: inherit; }
   .blocks__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+/* One column would otherwise hand a tablet a single 700px frame — wider than
+   either column gets on a desktop. Cap it and centre it instead. */
+@media (max-width: 819px) {
+  .block {
+    width: 100%;
+    max-width: 430px;
+    margin-inline: auto;
+  }
+}
+
 .block {
   display: flex;
   flex-direction: column;
