@@ -7,8 +7,8 @@
 <meta name="description" content="MAISON KOLKHETI-ს მიერ წარმოდგენილი ექვსი ქართველი მხატვარი და მათი ნამუშევრები.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Noto+Serif+Georgian:wght@400&family=Noto+Sans+Georgian:wght@300;400&display=swap">
-<link rel="stylesheet" href="pages.css?v=5">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="pages.css?v=6">
 </head>
 <body>
 
@@ -20,111 +20,134 @@
       <a href="jewelry.html">საიუველირო</a>
     </nav>
   </div>
+  <div class="progress"></div>
 </header>
 
 <main>
 
-  <section class="plate">
+  <section class="hero">
     <div class="wrap">
-      <span class="label plate__no">დარბაზი I</span>
+      <span class="tag hero__tag">კოლექცია</span>
       <h1>მხატვრები</h1>
-      <div class="plate__rule"></div>
       <p>
         ექვსი ავტორი, რომელთა ნამუშევრებიც MAISON KOLKHETI-ს კოლექციაში შედის.
-        თითოეული თავისებურად კითხულობს კოლხეთის მითს — ოქროს, წყლისა და შუქის
-        ენაზე.
+        თითოეული თავისებურად კითხულობს კოლხეთის მითს.
       </p>
+      <div class="hero__meta tag">
+        <span><b>06</b>ავტორი</span>
+        <span><b>2018—2025</b>პერიოდი</span>
+        <span><b>თბილისი</b>ექსპოზიცია</span>
+      </div>
     </div>
   </section>
 
-  <!-- Six works hung two to a row, every second one lower, frames at different
-       heights. Swap each .work__ph for an <img> when the photography lands. -->
-  <section class="wall">
-    <div class="wrap wall__grid">
+  <!-- Two columns. Swap each .card__ph for an <img class="card__img"> with
+       object-fit: cover once the photography lands; --a / --b only tint the
+       placeholder and go with it. -->
+  <section class="grid-section">
+    <div class="wrap grid">
 
-      <figure class="work" style="--a:#1d1610; --b:#3a2a18; --ar:4 / 5">
-        <div class="work__frame"><span class="work__ph">I</span></div>
-        <figcaption class="work__label">
-          <span class="label work__no">01</span>
-          <h2 class="work__name">ნინო ბერიძე</h2>
-          <p class="label work__medium">ზეთი ტილოზე · 2019—2024</p>
-          <p class="work__note">
+      <article class="card" style="--a:#1d1610; --b:#3b2b18">
+        <div class="card__frame">
+          <span class="tag card__no">01</span>
+          <div class="card__ph">I</div>
+          <button class="card__cta" type="button" data-view>ნახვა</button>
+        </div>
+        <div class="card__body">
+          <h2 class="card__name">ნინო ბერიძე</h2>
+          <div class="card__rule"></div>
+          <p class="tag card__medium">ზეთი ტილოზე · 2019—2024</p>
+          <p class="card__note">
             დიდფორმატიანი პეიზაჟები, სადაც კოლხეთის ჭაობი ოქროსფერ ნისლად იქცევა.
             ფერი ფენებად იდება — ზოგჯერ ერთი ტილო წელიწადს საჭიროებს.
           </p>
-          <button class="view" type="button" data-view>ნახვა</button>
-        </figcaption>
-      </figure>
+        </div>
+      </article>
 
-      <figure class="work" style="--a:#141a1d; --b:#2e3a42; --ar:1 / 1">
-        <div class="work__frame"><span class="work__ph">II</span></div>
-        <figcaption class="work__label">
-          <span class="label work__no">02</span>
-          <h2 class="work__name">ლევან ქავთარაძე</h2>
-          <p class="label work__medium">შერეული ტექნიკა · 2021—2025</p>
-          <p class="work__note">
+      <article class="card" style="--a:#141a1d; --b:#2f3b43">
+        <div class="card__frame">
+          <span class="tag card__no">02</span>
+          <div class="card__ph">II</div>
+          <button class="card__cta" type="button" data-view>ნახვა</button>
+        </div>
+        <div class="card__body">
+          <h2 class="card__name">ლევან ქავთარაძე</h2>
+          <div class="card__rule"></div>
+          <p class="tag card__medium">შერეული ტექნიკა · 2021—2025</p>
+          <p class="card__note">
             ტილოზე ლითონის ფურცელი და პიგმენტი ერთად. სერია „არგონავტები" ზღვის
             ზედაპირის ანარეკლს ფიზიკურ ზედაპირად აქცევს.
           </p>
-          <button class="view" type="button" data-view>ნახვა</button>
-        </figcaption>
-      </figure>
+        </div>
+      </article>
 
-      <figure class="work" style="--a:#1f140c; --b:#42281a; --ar:3 / 4">
-        <div class="work__frame"><span class="work__ph">III</span></div>
-        <figcaption class="work__label">
-          <span class="label work__no">03</span>
-          <h2 class="work__name">ანა მიქელაძე</h2>
-          <p class="label work__medium">აკვარელი, ქაღალდი · 2022—2025</p>
-          <p class="work__note">
+      <article class="card" style="--a:#1f140c; --b:#43291b">
+        <div class="card__frame">
+          <span class="tag card__no">03</span>
+          <div class="card__ph">III</div>
+          <button class="card__cta" type="button" data-view>ნახვა</button>
+        </div>
+        <div class="card__body">
+          <h2 class="card__name">ანა მიქელაძე</h2>
+          <div class="card__rule"></div>
+          <p class="tag card__medium">აკვარელი, ქაღალდი · 2022—2025</p>
+          <p class="card__note">
             მცირე ფორმატი, თითქმის დღიურის ჩანაწერები. ერთსა და იმავე მოტივს
             მრავალჯერ უბრუნდება, სანამ ფორმა არ დაიშლება.
           </p>
-          <button class="view" type="button" data-view>ნახვა</button>
-        </figcaption>
-      </figure>
+        </div>
+      </article>
 
-      <figure class="work" style="--a:#15151d; --b:#2c2b45; --ar:5 / 4">
-        <div class="work__frame"><span class="work__ph">IV</span></div>
-        <figcaption class="work__label">
-          <span class="label work__no">04</span>
-          <h2 class="work__name">გიორგი ლომიძე</h2>
-          <p class="label work__medium">აკრილი, ხე · 2020—2024</p>
-          <p class="work__note">
+      <article class="card" style="--a:#15151d; --b:#2d2c46">
+        <div class="card__frame">
+          <span class="tag card__no">04</span>
+          <div class="card__ph">IV</div>
+          <button class="card__cta" type="button" data-view>ნახვა</button>
+        </div>
+        <div class="card__body">
+          <h2 class="card__name">გიორგი ლომიძე</h2>
+          <div class="card__rule"></div>
+          <p class="tag card__medium">აკრილი, ხე · 2020—2024</p>
+          <p class="card__note">
             ძველ კარებსა და ფიცრებზე მუშაობს — მასალა ნამუშევრის ნაწილია. ხის
             ნაპრალები კომპოზიციის ხაზებად რჩება.
           </p>
-          <button class="view" type="button" data-view>ნახვა</button>
-        </figcaption>
-      </figure>
+        </div>
+      </article>
 
-      <figure class="work" style="--a:#1b1914; --b:#3d3726; --ar:4 / 5">
-        <div class="work__frame"><span class="work__ph">V</span></div>
-        <figcaption class="work__label">
-          <span class="label work__no">05</span>
-          <h2 class="work__name">თამარ ჩხეიძე</h2>
-          <p class="label work__medium">ტემპერა, ფურცელი · 2018—2023</p>
-          <p class="work__note">
+      <article class="card" style="--a:#1b1914; --b:#3e3827">
+        <div class="card__frame">
+          <span class="tag card__no">05</span>
+          <div class="card__ph">V</div>
+          <button class="card__cta" type="button" data-view>ნახვა</button>
+        </div>
+        <div class="card__body">
+          <h2 class="card__name">თამარ ჩხეიძე</h2>
+          <div class="card__rule"></div>
+          <p class="tag card__medium">ტემპერა, ფურცელი · 2018—2023</p>
+          <p class="card__note">
             ხატწერის ტექნიკას თანამედროვე პორტრეტში გადაიტანს. ოქროს ფონი მისთვის
             ისტორიული ციტატაა, არა დეკორაცია.
           </p>
-          <button class="view" type="button" data-view>ნახვა</button>
-        </figcaption>
-      </figure>
+        </div>
+      </article>
 
-      <figure class="work" style="--a:#101314; --b:#26343a; --ar:1 / 1">
-        <div class="work__frame"><span class="work__ph">VI</span></div>
-        <figcaption class="work__label">
-          <span class="label work__no">06</span>
-          <h2 class="work__name">დავით ნადირაძე</h2>
-          <p class="label work__medium">ნახშირი, ტილო · 2023—2025</p>
-          <p class="work__note">
+      <article class="card" style="--a:#101314; --b:#27353b">
+        <div class="card__frame">
+          <span class="tag card__no">06</span>
+          <div class="card__ph">VI</div>
+          <button class="card__cta" type="button" data-view>ნახვა</button>
+        </div>
+        <div class="card__body">
+          <h2 class="card__name">დავით ნადირაძე</h2>
+          <div class="card__rule"></div>
+          <p class="tag card__medium">ნახშირი, ტილო · 2023—2025</p>
+          <p class="card__note">
             მონოქრომული სერია „სამყაროს დაბადება". შუქს სიბნელიდან იღებს — ტილოს
             ჯერ მთლიანად აშავებს, მერე ფორმას ასუფთავებს.
           </p>
-          <button class="view" type="button" data-view>ნახვა</button>
-        </figcaption>
-      </figure>
+        </div>
+      </article>
 
     </div>
   </section>
@@ -132,35 +155,37 @@
   <section class="closing">
     <div class="wrap closing__in">
       <div>
-        <span class="label plate__no">კონტაქტი</span>
+        <span class="tag hero__tag">კონტაქტი</span>
         <h2>დაინტერესდით ნამუშევრით?</h2>
         <p>
           ხელმისაწვდომობასა და ფასებზე ინფორმაციისთვის მოგვწერეთ — კოლექციის
           ნაწილი მუდმივ ექსპოზიციაშია.
         </p>
       </div>
-      <a class="view" href="mailto:info@kolkheti.ge">დაგვიკავშირდით</a>
+      <a class="btn" href="mailto:info@kolkheti.ge">დაგვიკავშირდით</a>
     </div>
   </section>
 
 </main>
 
 <footer class="site-foot">
-  <div class="wrap site-foot__in label">
+  <div class="wrap site-foot__in tag">
     <span>© 2026 MAISON KOLKHETI</span>
     <a href="index.html">მთავარი</a>
   </div>
 </footer>
 
 <div class="detail" id="detail" data-open="false" role="dialog" aria-modal="true" aria-label="ნამუშევრის დათვალიერება">
-  <button class="detail__close" type="button">დახურვა</button>
-  <div class="detail__frame"><span></span></div>
-  <div class="detail__label">
-    <strong></strong>
-    <small></small>
+  <button class="detail__close" type="button" aria-label="დახურვა">&times;</button>
+  <div class="detail__sheet">
+    <div class="detail__frame"><span></span></div>
+    <div class="detail__body">
+      <strong></strong>
+      <small></small>
+    </div>
   </div>
 </div>
 
-<script src="pages.js?v=5"></script>
+<script src="pages.js?v=6"></script>
 </body>
 </html>

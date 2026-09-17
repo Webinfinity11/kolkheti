@@ -1,38 +1,41 @@
 /* Catalogue pages (artists.html, jewelry.html).
-   The reference is a gallery wall, not a product grid: works hung at uneven
-   heights, each with a small printed label under it, and almost no colour
-   besides the paper, the dark and one brass accent. */
+
+   Contemporary editorial: one tight bold sans doing all the display work, a
+   hard dark/light contrast with a single saturated gold, a strict two-column
+   system, and motion that only happens on hover. Nothing decorative. */
 
 *,
 *::before,
 *::after { box-sizing: border-box; }
 
 :root {
-  --ink: #08090b;
-  --ink-2: #0e1013;
-  --paper: #e8e3d7;
-  --muted: #7f7a70;
-  --brass: #c8a86a;
-  --rule: rgba(232, 227, 215, 0.13);
+  --bg: #0b0b0c;
+  --surface: #141416;
+  --surface-2: #1b1b1e;
+  --text: #f5f5f4;
+  --muted: #8b8b8f;
+  --gold: #e8b44a;
+  --line: rgba(245, 245, 244, 0.1);
 
-  --display: "Noto Serif Georgian", "Playfair Display", Georgia, serif;
-  --body: "Noto Sans Georgian", "Segoe UI", system-ui, sans-serif;
+  --font: "Noto Sans Georgian", "Segoe UI", system-ui, sans-serif;
   --mark: "Playfair Display", Georgia, serif;
 
   --gutter: clamp(20px, 5vw, 56px);
-  --measure: 1000px;
+  --measure: 980px;
+  --radius: 14px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: var(--ink);
-  color: var(--paper);
-  font-family: var(--body);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
   font-size: 14px;
-  font-weight: 300;
-  line-height: 1.75;
+  font-weight: 400;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -52,11 +55,11 @@ a { color: inherit; }
   padding: 0 var(--gutter);
 }
 
-/* Small tracked-out label type — used for numbers, media lines, nav */
-.label {
+/* Tracked-out micro type for every small label on the page */
+.tag {
   font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.3em;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
@@ -66,9 +69,9 @@ a { color: inherit; }
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(8, 9, 11, 0.86);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--rule);
+  background: rgba(11, 11, 12, 0.72);
+  backdrop-filter: blur(18px) saturate(140%);
+  border-bottom: 1px solid var(--line);
 }
 
 .site-head__in {
@@ -76,250 +79,303 @@ a { color: inherit; }
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  height: 62px;
+  height: 60px;
 }
 
 .wordmark {
   font: 500 clamp(12px, 1.8vw, 15px)/1 var(--mark);
-  letter-spacing: 0.3em;
-  color: var(--paper);
+  letter-spacing: 0.28em;
   text-decoration: none;
   white-space: nowrap;
 }
 
 .site-nav {
   display: flex;
-  gap: clamp(16px, 3vw, 34px);
+  gap: 6px;
 }
 
+/* Pill nav — the current page is filled, the rest are ghosts */
 .site-nav a {
-  position: relative;
-  padding: 5px 0;
-  font-size: 10px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
+  padding: 7px 15px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
   text-decoration: none;
   color: var(--muted);
-  transition: color 0.4s ease;
+  white-space: nowrap;
+  transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
 }
-.site-nav a::after {
-  content: "";
+.site-nav a:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.site-nav a[aria-current="page"] {
+  background: var(--gold);
+  color: #17120a;
+}
+
+/* Scroll progress, set from pages.js */
+.progress {
   position: absolute;
   left: 0;
-  bottom: 0;
-  width: 100%;
+  bottom: -1px;
   height: 1px;
-  background: var(--brass);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.site-nav a:hover { color: var(--paper); }
-.site-nav a[aria-current="page"] { color: var(--brass); }
-.site-nav a:hover::after,
-.site-nav a[aria-current="page"]::after {
-  transform: scaleX(1);
-  transform-origin: left;
+  width: var(--p, 0%);
+  background: var(--gold);
 }
 
-/* ---------- Opening plate ----------
-   Reads like the introductory panel at the entrance of a room. */
+/* ---------- Hero ---------- */
 
-.plate {
-  padding: clamp(64px, 16vh, 168px) 0 clamp(44px, 9vh, 96px);
+.hero {
+  padding: clamp(56px, 13vh, 130px) 0 clamp(34px, 6vh, 64px);
 }
 
-.plate__no {
-  display: block;
-  margin-bottom: clamp(20px, 4vh, 38px);
-  color: var(--brass);
+.hero__tag {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--gold);
 }
 
-.plate h1 {
-  margin: 0;
-  max-width: 14ch;
-  font: 400 clamp(38px, 8vw, 88px)/1.02 var(--display);
-  letter-spacing: -0.02em;
+.hero h1 {
+  margin: clamp(20px, 4vh, 34px) 0 0;
+  max-width: 13ch;
+  font-size: clamp(42px, 9vw, 96px);
+  font-weight: 700;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
 }
 
-.plate__rule {
-  height: 1px;
-  margin: clamp(28px, 5vh, 52px) 0 clamp(22px, 4vh, 36px);
-  background: var(--rule);
-}
-
-.plate p {
-  margin: 0;
-  max-width: 46ch;
+.hero p {
+  margin: clamp(20px, 3vh, 30px) 0 0;
+  max-width: 44ch;
+  font-size: 15px;
   color: var(--muted);
 }
 
-/* ---------- The wall ----------
-   Two columns, every second work hung lower, frames at different heights —
-   the irregularity is the point. */
-
-.wall {
-  padding: clamp(24px, 5vh, 56px) 0 clamp(64px, 12vh, 132px);
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  margin-top: clamp(28px, 5vh, 48px);
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+.hero__meta b {
+  margin-right: 8px;
+  font-weight: 600;
+  color: var(--text);
 }
 
-.wall__grid {
+/* ---------- Two-column grid ---------- */
+
+.grid-section { padding: clamp(16px, 3vh, 34px) 0 clamp(56px, 11vh, 120px); }
+
+.grid {
   display: grid;
   grid-template-columns: 1fr;
-  align-items: start;
-  gap: clamp(52px, 9vh, 104px) clamp(30px, 5vw, 68px);
+  gap: clamp(30px, 5vh, 52px) clamp(18px, 2.6vw, 30px);
 }
 
-@media (min-width: 820px) {
-  .wall__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .work:nth-child(even) { margin-top: clamp(36px, 6vw, 88px); }
+@media (min-width: 760px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@media (max-width: 819px) {
-  .work {
-    width: 100%;
-    max-width: 420px;
-    margin-inline: auto;
-  }
+@media (max-width: 759px) {
+  .card { max-width: 440px; margin-inline: auto; width: 100%; }
 }
 
-.work { margin: 0; }
+.card {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.55s var(--ease), opacity 0.8s ease;
+}
+.card:hover { transform: translateY(-5px); }
 
-.work__frame {
+/* Reveal on scroll. pages.js adds this class up front and removes it as each
+   card comes into view, so the transition above carries both the reveal and
+   the hover lift — and the cards stay visible if the script never runs. */
+.card.will-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.card__frame {
   position: relative;
-  aspect-ratio: var(--ar, 4 / 5);
+  aspect-ratio: var(--ar, 5 / 4);
   overflow: hidden;
-  background:
-    radial-gradient(130% 100% at 32% 18%, var(--b, #1c1a17), transparent 70%),
-    linear-gradient(158deg, var(--a, #131211), #060607 80%);
-  box-shadow: 0 0 0 1px var(--rule);
-  transition: box-shadow 0.6s ease;
+  border-radius: var(--radius);
+  background: var(--surface);
 }
-.work:hover .work__frame { box-shadow: 0 0 0 1px rgba(200, 168, 106, 0.45); }
 
-/* Placeholder mark — replace the whole .work__frame content with an <img>
-   (object-fit: cover) once the photography lands. --a / --b only tint the
-   placeholder and go with it. */
-.work__ph {
+/* Placeholder fill — swap this whole block for an <img class="card__img">
+   with object-fit: cover once the photography lands. */
+.card__ph {
   position: absolute;
   inset: 0;
   display: grid;
   place-content: center;
-  font: 400 clamp(22px, 3vw, 34px)/1 var(--mark);
-  letter-spacing: 0.22em;
-  color: rgba(200, 168, 106, 0.26);
-  transition: color 0.6s ease, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  background:
+    radial-gradient(120% 110% at 28% 12%, var(--b, #26262b), transparent 72%),
+    linear-gradient(152deg, var(--a, #17171a), #0d0d0f 82%);
+  font: 500 clamp(24px, 3.4vw, 38px)/1 var(--mark);
+  letter-spacing: 0.2em;
+  color: rgba(232, 180, 74, 0.34);
+  transition: transform 0.9s var(--ease), color 0.5s var(--ease);
 }
-.work:hover .work__ph {
-  color: rgba(200, 168, 106, 0.5);
-  transform: scale(1.04);
-}
-
-/* The printed label under each work */
-.work__label {
-  margin-top: 16px;
-  padding-top: 13px;
-  border-top: 1px solid var(--rule);
+.card:hover .card__ph {
+  transform: scale(1.05);
+  color: rgba(232, 180, 74, 0.6);
 }
 
-.work__no {
-  display: block;
-  color: var(--muted);
+/* Real photography drops straight in: <img class="card__img" src="..." alt="">
+   next to (or instead of) .card__ph — same frame, same hover. */
+.card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.9s var(--ease);
+}
+.card:hover .card__img { transform: scale(1.05); }
+
+/* Index number, sitting on the frame */
+.card__no {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(11, 11, 12, 0.55);
+  backdrop-filter: blur(6px);
+  color: rgba(245, 245, 244, 0.72);
 }
 
-.work__name {
-  margin: 9px 0 0;
-  font: 400 clamp(19px, 2.1vw, 25px)/1.3 var(--display);
-  letter-spacing: -0.005em;
-}
-
-.work__medium {
-  margin: 7px 0 0;
-  color: var(--brass);
-}
-
-.work__note {
-  margin: 13px 0 0;
-  max-width: 40ch;
-  color: var(--muted);
-}
-
-/* "ნახვა" — a line that extends on hover, not a boxed button */
-.view {
+/* Gold pill that rises out of the frame on hover */
+.card__cta {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 20px;
-  padding: 0;
+  gap: 8px;
+  padding: 9px 16px;
   border: 0;
-  background: none;
-  font-family: var(--body);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--paper);
+  border-radius: 999px;
+  background: var(--gold);
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 600;
+  color: #17120a;
   cursor: pointer;
-  transition: color 0.4s ease;
-}
-.view::after {
-  content: "";
-  width: 24px;
-  height: 1px;
-  background: var(--brass);
-  transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.view:hover { color: var(--brass); }
-.view:hover::after { width: 44px; }
-
-/* Reveal on scroll — the class is only added by pages.js, so the works stay
-   visible if JS never runs. */
-.will-reveal .work__frame,
-.will-reveal .work__label {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity 1s ease, transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(10px);
+  transition: opacity 0.4s var(--ease), transform 0.5s var(--ease);
 }
-.will-reveal .work__label { transition-delay: 0.14s; }
-.work.is-in .work__frame,
-.work.is-in .work__label {
+.card:hover .card__cta,
+.card__cta:focus-visible {
   opacity: 1;
   transform: none;
 }
+/* Touch has no hover — keep the pill up permanently there */
+@media (hover: none) {
+  .card__cta { opacity: 1; transform: none; }
+}
 
-/* ---------- Closing plate ---------- */
+.card__body { padding: 15px 2px 0; }
+
+.card__name {
+  margin: 0;
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Hairline under the name that draws itself on hover */
+.card__rule {
+  height: 1px;
+  margin: 12px 0;
+  background: var(--line);
+  position: relative;
+}
+.card__rule::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s var(--ease);
+}
+.card:hover .card__rule::after { transform: scaleX(1); }
+
+.card__medium { margin: 0; color: var(--gold); }
+
+.card__note {
+  margin: 9px 0 0;
+  color: var(--muted);
+}
+
+/* ---------- Closing panel ---------- */
 
 .closing {
-  padding: clamp(56px, 11vh, 124px) 0;
-  border-top: 1px solid var(--rule);
-  background: var(--ink-2);
+  padding: clamp(48px, 9vh, 104px) 0;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
 }
 .closing__in {
   display: grid;
-  gap: clamp(22px, 4vw, 56px);
+  gap: clamp(24px, 4vw, 48px);
 }
-@media (min-width: 760px) {
+@media (min-width: 720px) {
   .closing__in {
     grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
+    align-items: center;
   }
 }
 .closing h2 {
-  margin: 12px 0 0;
-  max-width: 18ch;
-  font: 400 clamp(24px, 3.6vw, 38px)/1.2 var(--display);
+  margin: 14px 0 0;
+  max-width: 17ch;
+  font-size: clamp(24px, 3.6vw, 36px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
 }
 .closing p {
-  margin: 14px 0 0;
-  max-width: 42ch;
+  margin: 12px 0 0;
+  max-width: 44ch;
   color: var(--muted);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 26px;
+  border-radius: 999px;
+  background: var(--gold);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #17120a;
+  white-space: nowrap;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(232, 180, 74, 0.22);
 }
 
 /* ---------- Footer ---------- */
 
 .site-foot {
-  padding: 26px 0 36px;
-  border-top: 1px solid var(--rule);
+  padding: 24px 0 34px;
+  border-top: 1px solid var(--line);
   color: var(--muted);
 }
 .site-foot__in {
@@ -329,78 +385,92 @@ a { color: inherit; }
   justify-content: space-between;
 }
 .site-foot a { text-decoration: none; }
-.site-foot a:hover { color: var(--paper); }
+.site-foot a:hover { color: var(--text); }
 
-/* ---------- Detail overlay ----------
-   What "ნახვა" opens today. Swap the button for a link to a real per-work
-   page later and this can go without touching the wall. */
+/* ---------- Detail sheet ----------
+   What the pill opens today. Swap the button for a link to a real per-work
+   page later and this can go without touching the grid. */
 
 .detail {
   position: fixed;
   inset: 0;
   z-index: 40;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  gap: clamp(16px, 3vh, 30px);
-  padding: clamp(48px, 8vh, 84px) var(--gutter) clamp(26px, 5vh, 54px);
-  background: rgba(6, 7, 8, 0.97);
-  backdrop-filter: blur(10px);
+  place-items: center;
+  padding: var(--gutter);
+  background: rgba(6, 6, 7, 0.78);
+  backdrop-filter: blur(14px);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s;
+  transition: opacity 0.4s ease, visibility 0.4s;
 }
 .detail[data-open="true"] { opacity: 1; visibility: visible; }
+
+.detail__sheet {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: min(100%, 720px);
+  max-height: min(100%, 780px);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 6px);
+  background: var(--surface);
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.5s var(--ease);
+}
+.detail[data-open="true"] .detail__sheet { transform: none; }
 
 .detail__frame {
   position: relative;
   min-height: 0;
-  box-shadow: 0 0 0 1px var(--rule);
   background:
-    radial-gradient(130% 100% at 32% 18%, var(--b, #1c1a17), transparent 70%),
-    linear-gradient(158deg, var(--a, #131211), #060607 80%);
+    radial-gradient(120% 110% at 28% 12%, var(--b, #26262b), transparent 72%),
+    linear-gradient(152deg, var(--a, #17171a), #0d0d0f 82%);
 }
 .detail__frame span {
   position: absolute;
   inset: 0;
   display: grid;
   place-content: center;
-  font: 400 clamp(38px, 8vw, 78px)/1 var(--mark);
-  letter-spacing: 0.22em;
-  color: rgba(200, 168, 106, 0.3);
+  font: 500 clamp(34px, 7vw, 64px)/1 var(--mark);
+  letter-spacing: 0.2em;
+  color: rgba(232, 180, 74, 0.38);
 }
 
-.detail__label { text-align: center; }
-.detail__label strong {
+.detail__body { padding: clamp(18px, 3vw, 28px); }
+.detail__body strong {
   display: block;
-  font: 400 clamp(19px, 2.6vw, 26px)/1.3 var(--display);
+  font-size: clamp(19px, 2.6vw, 25px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
-.detail__label small {
+.detail__body small {
   display: block;
-  margin-top: 8px;
-  max-width: 54ch;
-  margin-inline: auto;
-  font-size: 12.5px;
+  margin-top: 9px;
+  font-size: 13px;
   color: var(--muted);
 }
 
 .detail__close {
   position: absolute;
-  top: 16px;
+  top: var(--gutter);
   right: var(--gutter);
-  padding: 8px 0;
-  border: 0;
-  background: none;
-  font-family: var(--body);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--muted);
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-content: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(20, 20, 22, 0.8);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text);
   cursor: pointer;
-  transition: color 0.35s ease;
+  transition: background-color 0.35s var(--ease);
 }
-.detail__close:hover { color: var(--paper); }
+.detail__close:hover { background: var(--surface-2); }
 
 :focus-visible {
-  outline: 1px solid var(--brass);
-  outline-offset: 5px;
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
 }

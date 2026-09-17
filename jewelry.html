@@ -7,8 +7,8 @@
 <meta name="description" content="MAISON KOLKHETI-ს საიუველირო კოლექციები — ხელით ნაკეთები ნაწარმი ოქროსა და ვერცხლში.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Noto+Serif+Georgian:wght@400&family=Noto+Sans+Georgian:wght@300;400&display=swap">
-<link rel="stylesheet" href="pages.css?v=5">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="pages.css?v=6">
 </head>
 <body>
 
@@ -20,54 +20,65 @@
       <a href="jewelry.html" aria-current="page">საიუველირო</a>
     </nav>
   </div>
+  <div class="progress"></div>
 </header>
 
 <main>
 
-  <section class="plate">
+  <section class="hero">
     <div class="wrap">
-      <span class="label plate__no">დარბაზი II</span>
+      <span class="tag hero__tag">კოლექცია</span>
       <h1>საიუველირო</h1>
-      <div class="plate__rule"></div>
       <p>
         ორი კოლექცია, ერთი წყარო — კოლხური ოქრომჭედლობა. თითოეული ნაწარმი ხელით
-        სრულდება თბილისურ სახელოსნოში, ტრადიციული ტექნიკებით.
+        სრულდება თბილისურ სახელოსნოში.
       </p>
+      <div class="hero__meta tag">
+        <span><b>02</b>კოლექცია</span>
+        <span><b>585° / 925°</b>ლითონი</span>
+        <span><b>ხელით</b>წარმოება</span>
+      </div>
     </div>
   </section>
 
-  <!-- Two collections, side by side on a desktop, the second hung lower. -->
-  <section class="wall">
-    <div class="wrap wall__grid">
+  <!-- Two columns, same system as the artists page. -->
+  <section class="grid-section">
+    <div class="wrap grid">
 
-      <figure class="work" style="--a:#231a0d; --b:#5a4319; --ar:4 / 5">
-        <div class="work__frame"><span class="work__ph">I</span></div>
-        <figcaption class="work__label">
-          <span class="label work__no">კოლექცია 01</span>
-          <h2 class="work__name">ოქროს საწმისი</h2>
-          <p class="label work__medium">585° ოქრო · ხელით ჭედვა</p>
-          <p class="work__note">
+      <article class="card" style="--a:#231a0d; --b:#5b441a">
+        <div class="card__frame">
+          <span class="tag card__no">01</span>
+          <div class="card__ph">I</div>
+          <button class="card__cta" type="button" data-view>ნახვა</button>
+        </div>
+        <div class="card__body">
+          <h2 class="card__name">ოქროს საწმისი</h2>
+          <div class="card__rule"></div>
+          <p class="tag card__medium">585° ოქრო · ხელით ჭედვა</p>
+          <p class="card__note">
             კოლექციის ცენტრში საწმისის ქერცლის მოტივია — თითოეული ელემენტი ცალკე
             იჭედება და ხელით ეწყობა. საყურეები, მედალიონები და სამაჯურები,
             თითოეული ერთეული ნომრით.
           </p>
-          <button class="view" type="button" data-view>ნახვა</button>
-        </figcaption>
-      </figure>
+        </div>
+      </article>
 
-      <figure class="work" style="--a:#14191c; --b:#38474f; --ar:4 / 5">
-        <div class="work__frame"><span class="work__ph">II</span></div>
-        <figcaption class="work__label">
-          <span class="label work__no">კოლექცია 02</span>
-          <h2 class="work__name">თანავარსკვლავედი ვერცხლში</h2>
-          <p class="label work__medium">925° ვერცხლი, თეთრი ქვები · ლიმიტირებული</p>
-          <p class="work__note">
+      <article class="card" style="--a:#14191c; --b:#394850">
+        <div class="card__frame">
+          <span class="tag card__no">02</span>
+          <div class="card__ph">II</div>
+          <button class="card__cta" type="button" data-view>ნახვა</button>
+        </div>
+        <div class="card__body">
+          <h2 class="card__name">თანავარსკვლავედი ვერცხლში</h2>
+          <div class="card__rule"></div>
+          <p class="tag card__medium">925° ვერცხლი, თეთრი ქვები · ლიმიტირებული</p>
+          <p class="card__note">
             საქართველოს რუკა ვარსკვლავებად — იგივე მოტივი, რაც საიტის შესასვლელში.
             ყელსაბამები და ბეჭდები, სადაც თითოეული ქვა ერთ ქალაქს აღნიშნავს.
           </p>
-          <button class="view" type="button" data-view>ნახვა</button>
-        </figcaption>
-      </figure>
+        </div>
+      </article>
 
     </div>
   </section>
@@ -75,35 +86,37 @@
   <section class="closing">
     <div class="wrap closing__in">
       <div>
-        <span class="label plate__no">კონტაქტი</span>
+        <span class="tag hero__tag">კონტაქტი</span>
         <h2>ინდივიდუალური შეკვეთა</h2>
         <p>
           ნაწარმი ხელმისაწვდომია სახელოსნოში და შეკვეთით. ფასებსა და ვადებზე
           ინფორმაციისთვის მოგვწერეთ.
         </p>
       </div>
-      <a class="view" href="mailto:info@kolkheti.ge">დაგვიკავშირდით</a>
+      <a class="btn" href="mailto:info@kolkheti.ge">დაგვიკავშირდით</a>
     </div>
   </section>
 
 </main>
 
 <footer class="site-foot">
-  <div class="wrap site-foot__in label">
+  <div class="wrap site-foot__in tag">
     <span>© 2026 MAISON KOLKHETI</span>
     <a href="index.html">მთავარი</a>
   </div>
 </footer>
 
 <div class="detail" id="detail" data-open="false" role="dialog" aria-modal="true" aria-label="კოლექციის დათვალიერება">
-  <button class="detail__close" type="button">დახურვა</button>
-  <div class="detail__frame"><span></span></div>
-  <div class="detail__label">
-    <strong></strong>
-    <small></small>
+  <button class="detail__close" type="button" aria-label="დახურვა">&times;</button>
+  <div class="detail__sheet">
+    <div class="detail__frame"><span></span></div>
+    <div class="detail__body">
+      <strong></strong>
+      <small></small>
+    </div>
   </div>
 </div>
 
-<script src="pages.js?v=5"></script>
+<script src="pages.js?v=6"></script>
 </body>
 </html>
