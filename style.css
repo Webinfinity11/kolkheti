@@ -13,7 +13,7 @@ html, body {
   margin: 0;
   background: #000;
   color: #d8d2c4;
-  font-family: "Noto Sans Georgian", "Segoe UI", system-ui, sans-serif;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
   overscroll-behavior-y: none;
 }
 

@@ -17,7 +17,7 @@
   --gold: #e8b44a;
   --line: rgba(245, 245, 244, 0.1);
 
-  --font: "Noto Sans Georgian", "Segoe UI", system-ui, sans-serif;
+  --font: "Inter", "Segoe UI", system-ui, sans-serif;
   --mark: "Playfair Display", Georgia, serif;
 
   --gutter: clamp(20px, 5vw, 56px);
