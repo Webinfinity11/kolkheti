@@ -46,11 +46,11 @@ html, body {
   fill: transparent;
   pointer-events: none;
 }
-/* Only live at the end of the scroll, so dragging the fleece into view can
-   claim the gesture from the page scroll without blocking it earlier. */
+/* Only live at the end of the scroll, so an ordinary scroll is never
+   intercepted earlier. The drag itself blocks page scrolling from JS —
+   touch-action on an SVG child has no effect in Chrome or Safari. */
 .stage.is-end .hit {
   pointer-events: all;
-  touch-action: none;
 }
 
 /* Hints */

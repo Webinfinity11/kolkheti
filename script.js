@@ -42,13 +42,31 @@
     });
   }
 
-  // ---------- Canvas fit (object-fit: cover — always fills the stage) ----------
+  // ---------- Canvas fit ----------
   // Vertical crop split: 0 = keep the top edge (crop only bottom), 0.5 = center.
   // Low value keeps the compass in the top-left corner visible.
   const ALIGN_Y = 0.5;
 
+  // Plain "cover" on a 9:19.5 phone throws away ~75% of the frame width and cuts
+  // the Georgia map in half, so cap how far past "whole frame fits" we zoom.
+  // 1.65 is the point where the map outline (x 258-1020) still fits on a 390px
+  // wide screen. Whatever the frame then leaves uncovered is filled with a
+  // blurred blow-up of itself, so the stage stays full-bleed with no black bands.
+  const MAX_ZOOM = 1.65;
+
   // Works in CSS px or device px alike.
-  const fitScale = (w, h) => Math.max(w / FRAME_W, h / FRAME_H);
+  function fitScale(w, h) {
+    const contain = Math.min(w / FRAME_W, h / FRAME_H);
+    const cover = Math.max(w / FRAME_W, h / FRAME_H);
+    return Math.min(cover, contain * MAX_ZOOM);
+  }
+
+  // Tiny offscreen copy of the frame, blown back up for the backdrop — far
+  // cheaper per frame than ctx.filter = "blur(...)" and works everywhere.
+  const backdrop = document.createElement("canvas");
+  backdrop.width = 48;
+  backdrop.height = Math.round(48 * FRAME_H / FRAME_W);
+  const bctx = backdrop.getContext("2d");
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -81,11 +99,27 @@
     const scale = fitScale(cw, ch);
     const w = FRAME_W * scale;
     const h = FRAME_H * scale;
+    const x = (cw - w) / 2;
+    const y = (ch - h) * ALIGN_Y;
+
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, cw, ch);
-    ctx.drawImage(img, (cw - w) / 2, (ch - h) * ALIGN_Y, w, h);
+
+    // The frame stops short of an edge (portrait screens): bleed a dimmed,
+    // blurred copy out to the edges instead of leaving black bands.
+    if (x > 0.5 || y > 0.5) {
+      bctx.drawImage(img, 0, 0, backdrop.width, backdrop.height);
+      const bs = Math.max(cw / FRAME_W, ch / FRAME_H);
+      const bw = FRAME_W * bs;
+      const bh = FRAME_H * bs;
+      ctx.drawImage(backdrop, (cw - bw) / 2, (ch - bh) * ALIGN_Y, bw, bh);
+      ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
+      ctx.fillRect(0, 0, cw, ch);
+    }
+
+    ctx.drawImage(img, x, y, w, h);
     drawn = index;
   }
 
@@ -120,7 +154,7 @@
   // different input. Screen px, scaled down so it can't swallow a phone screen.
   const spotlightR = () => Math.max(110, Math.min(stage.clientWidth * 0.32, 260));
   const spot = document.getElementById("spot");
-  const pointer = { x: -999, y: -999, active: false };
+  const pointer = { x: -999, y: -999, active: false, touch: false };
   const smooth = { x: -999, y: -999, r: 0 };
 
   function toSvgPoint(clientX, clientY) {
@@ -168,27 +202,34 @@
 
   // Touch: press on the map and drag — the fleece follows the finger and fades
   // back out on release. Pointer capture keeps the drag alive outside the
-  // outline, and #hit sets touch-action:none so dragging doesn't scroll.
+  // outline once it has started.
   hit.addEventListener("pointerdown", (e) => {
     if (e.pointerType === "mouse") return;
     hit.setPointerCapture(e.pointerId);
     pointer.x = e.clientX;
     pointer.y = e.clientY;
     pointer.active = true;
-    e.preventDefault();
+    pointer.touch = true;
   });
   hit.addEventListener("pointermove", (e) => {
-    if (e.pointerType === "mouse" || !pointer.active) return;
+    if (e.pointerType === "mouse" || !pointer.touch) return;
     pointer.x = e.clientX;
     pointer.y = e.clientY;
-    e.preventDefault();
   });
   const endTouch = (e) => {
     if (e.pointerType === "mouse") return;
     pointer.active = false;
+    pointer.touch = false;
   };
   hit.addEventListener("pointerup", endTouch);
   hit.addEventListener("pointercancel", endTouch);
+
+  // touch-action on an SVG child is ignored by Chrome and Safari, so the page
+  // kept scrolling under the finger. Cancel the scroll here instead — only for
+  // the duration of a reveal drag, so ordinary scrolling is untouched.
+  document.addEventListener("touchmove", (e) => {
+    if (pointer.touch) e.preventDefault();
+  }, { passive: false });
 
   // ---------- Init ----------
   window.addEventListener("resize", resize);
