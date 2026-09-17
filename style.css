@@ -2,6 +2,13 @@
 *::before,
 *::after { box-sizing: border-box; }
 
+/* Shared with pages.css so the intro and the catalogue read as one site */
+:root {
+  --paper: #e8e3d7;
+  --brass: #c8a86a;
+  --edge: clamp(20px, 5vw, 56px);
+}
+
 html, body {
   margin: 0;
   background: #000;
