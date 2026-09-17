@@ -47,18 +47,20 @@
   // Low value keeps the compass in the top-left corner visible.
   const ALIGN_Y = 0.5;
 
-  // Plain "cover" on a 9:19.5 phone throws away ~75% of the frame width and cuts
-  // the Georgia map in half, so cap how far past "whole frame fits" we zoom.
-  // 1.65 is the point where the map outline (x 258-1020) still fits on a 390px
-  // wide screen. Whatever the frame then leaves uncovered is filled with a
-  // blurred blow-up of itself, so the stage stays full-bleed with no black bands.
-  const MAX_ZOOM = 1.65;
+  // Bounding box of the Georgia constellation in frame coordinates, plus the
+  // breathing room we want around it. Plain "cover" on a 9:19.5 phone zooms so
+  // hard that the western tip falls off the left edge, so the zoom is capped at
+  // whatever still keeps this box on screen. Anything the frame then leaves
+  // uncovered is filled with a blurred blow-up of itself — no black bands.
+  const MAP = { w: 777, h: 373 };
+  const MAP_MARGIN = 1.18;
+  const SAFE_W = MAP.w * MAP_MARGIN;
+  const SAFE_H = MAP.h * MAP_MARGIN;
 
   // Works in CSS px or device px alike.
   function fitScale(w, h) {
-    const contain = Math.min(w / FRAME_W, h / FRAME_H);
     const cover = Math.max(w / FRAME_W, h / FRAME_H);
-    return Math.min(cover, contain * MAX_ZOOM);
+    return Math.min(cover, w / SAFE_W, h / SAFE_H);
   }
 
   // Tiny offscreen copy of the frame, blown back up for the backdrop — far
