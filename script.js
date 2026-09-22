@@ -2,8 +2,12 @@
   const FRAME_COUNT = 240;
   const FRAME_W = 1280;   // aspect ratio of the source video
   const FRAME_H = 720;
-  const VERSION = 6;      // bump to bust browser cache after re-exporting frames
-  const framePath = (i) => `frames1080/f${String(i + 1).padStart(3, "0")}.jpg?v=${VERSION}`;
+  const VERSION = 7;      // bump to bust browser cache after re-exporting frames
+  // Phones never show the frame much wider than ~1100 device px, so they get
+  // the 1280px set; everything else gets the full 1920px one.
+  const small = Math.min(screen.width, screen.height) <= 500;
+  const FRAME_DIR = small ? "frames-m" : "frames";
+  const framePath = (i) => `${FRAME_DIR}/f${String(i + 1).padStart(3, "0")}.webp?v=${VERSION}`;
 
   const canvas = document.getElementById("canvas");
   const ctx = canvas.getContext("2d");
@@ -24,22 +28,55 @@
   let drawn = -1;
 
   // ---------- Preload ----------
+  // Frames arrive coarse-to-fine: every 8th first, then every 4th, and so on,
+  // so the whole scroll is scrubbable early and only gets smoother. The loader
+  // only waits for that first coarse pass (plus the last frame, the map);
+  // the rest stream in behind it and draw() uses the nearest loaded frame.
+  const order = [];
+  for (let step = 8; step >= 1; step /= 2) {
+    for (let i = 0; i < FRAME_COUNT; i += step) {
+      if (!order.includes(i)) order.push(i);
+    }
+  }
+  order.splice(order.indexOf(FRAME_COUNT - 1), 1);
+  order.splice(Math.ceil(FRAME_COUNT / 8), 0, FRAME_COUNT - 1);
+  const FIRST_PASS = Math.ceil(FRAME_COUNT / 8) + 1;
+  const PARALLEL = 6;
+
   function preload() {
     return new Promise((resolve) => {
-      for (let i = 0; i < FRAME_COUNT; i++) {
+      let next = 0;
+      const load = () => {
+        if (next >= order.length) return;
+        const i = order[next++];
         const img = new Image();
         img.decoding = "async";
         img.onload = img.onerror = () => {
           loaded++;
-          const pct = Math.round((loaded / FRAME_COUNT) * 100);
-          loaderBar.style.width = pct + "%";
-          loaderText.textContent = pct + "%";
-          if (loaded === FRAME_COUNT) resolve();
+          if (loaded <= FIRST_PASS) {
+            const pct = Math.round((loaded / FIRST_PASS) * 100);
+            loaderBar.style.width = pct + "%";
+            loaderText.textContent = pct + "%";
+            if (loaded === FIRST_PASS) resolve();
+          }
+          load();
         };
         img.src = framePath(i);
         frames[i] = img;
-      }
+      };
+      for (let k = 0; k < PARALLEL; k++) load();
     });
+  }
+
+  const ready = (img) => img && img.complete && img.naturalWidth;
+
+  // Closest frame that has already arrived
+  function nearestLoaded(index) {
+    for (let d = 0; d < FRAME_COUNT; d++) {
+      if (ready(frames[index - d])) return index - d;
+      if (ready(frames[index + d])) return index + d;
+    }
+    return -1;
   }
 
   // ---------- Viewport lock ----------
@@ -126,9 +163,10 @@
     draw(Math.round(current));
   }
 
-  function draw(index) {
+  function draw(wanted) {
+    const index = nearestLoaded(wanted);
+    if (index < 0 || index === drawn) return;
     const img = frames[index];
-    if (!img || !img.complete || !img.naturalWidth || index === drawn) return;
     const cw = canvas.width;
     const ch = canvas.height;
     const scale = fitScale(cw, ch);
