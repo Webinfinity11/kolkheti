@@ -67,6 +67,8 @@ html, body {
   stroke: rgba(0, 0, 0, 0.6);
   stroke-width: 7px;
   stroke-linejoin: round;
+  /* The map illustration carries its own title right under this one */
+  display: none;
 }
 
 .hit {

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@500&display=swap">
-<link rel="stylesheet" href="style.css?v=19">
+<link rel="stylesheet" href="style.css?v=20">
 </head>
 <body>
 
@@ -24,15 +24,7 @@
     <!-- Same 1280x720 coordinate space as the video frames; viewBox is set in script.js to crop like the canvas -->
     <svg class="overlay" id="overlay" viewBox="0 0 1280 720" preserveAspectRatio="none">
       <defs>
-        <radialGradient id="fade" gradientUnits="userSpaceOnUse" cx="570" cy="300" r="560" gradientTransform="translate(570 300) scale(1 0.62) translate(-570 -300)">
-          <stop offset="0.62" stop-color="#fff"/>
-          <stop offset="1" stop-color="#000"/>
-        </radialGradient>
-        <mask id="fleeceMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="720">
-          <rect width="1280" height="720" fill="url(#fade)"/>
-        </mask>
-
-        <!-- Cursor spotlight: soft circle that reveals the golden fleece -->
+        <!-- Cursor spotlight: soft circle that reveals the map illustration -->
         <radialGradient id="spotGrad">
           <stop offset="0" stop-color="#fff" stop-opacity="1"/>
           <stop offset="0.4" stop-color="#fff" stop-opacity="1"/>
@@ -46,10 +38,9 @@
         </mask>
       </defs>
 
-      <g mask="url(#fleeceMask)">
-        <g id="fleece" mask="url(#spotMask)">
-          <image href="assets/golden-fleece.webp" x="-282" y="-147" width="1638" height="914"/>
-        </g>
+      <!-- Illustrated map, pre-warped so its border sits on the constellation's stars -->
+      <g id="fleece" mask="url(#spotMask)">
+        <image href="assets/colchia-map.png" x="220" y="120" width="860" height="426.67"/>
       </g>
 
       <!-- Revealed letter by letter through the same cursor spotlight -->
@@ -72,6 +63,6 @@
   </div>
 </main>
 
-<script src="script.js?v=19"></script>
+<script src="script.js?v=20"></script>
 </body>
 </html>
