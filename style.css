@@ -87,11 +87,12 @@ html, body {
   letter-spacing: 0.1em;
 }
 .lore__note {
-  font-size: 0.66em;
+  font-size: 0.72em;
   fill: #e9b86a;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
+/* A species name is always written as-is and in italics */
+.lore__taxon { font-style: italic; }
 .lore__dot {
   fill: #f2c983;
   filter: drop-shadow(0 0 4px rgba(245, 185, 100, 0.9));
