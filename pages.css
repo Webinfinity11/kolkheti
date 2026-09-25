@@ -251,16 +251,13 @@ a { color: inherit; }
   color: rgba(245, 245, 244, 0.72);
 }
 
-/* Gold pill that rises out of the frame on hover */
+/* Gold pill under the text, on the right */
 .card__cta {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  z-index: 1;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 16px;
+  width: fit-content;
+  margin: 18px 0 0 auto;
+  padding: 9px 18px;
   border: 0;
   border-radius: 999px;
   background: var(--gold);
@@ -269,18 +266,12 @@ a { color: inherit; }
   font-weight: 600;
   color: #17120a;
   cursor: pointer;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.4s var(--ease), transform 0.5s var(--ease);
+  transition: transform 0.4s var(--ease), filter 0.4s var(--ease);
 }
-.card:hover .card__cta,
+.card__cta:hover,
 .card__cta:focus-visible {
-  opacity: 1;
-  transform: none;
-}
-/* Touch has no hover — keep the pill up permanently there */
-@media (hover: none) {
-  .card__cta { opacity: 1; transform: none; }
+  transform: translateY(-2px);
+  filter: brightness(1.08);
 }
 
 .card__body { padding: 15px 2px 0; }
@@ -332,10 +323,7 @@ a { color: inherit; }
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: clamp(24px, 4vw, 56px);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--surface);
+    padding: clamp(8px, 2vw, 32px);
   }
   .card__name { font-size: clamp(22px, 2.4vw, 30px); }
 }
