@@ -16,6 +16,7 @@
   const overlay = document.getElementById("overlay");
   const hit = document.getElementById("hit");
   const brand = document.querySelector(".brand");
+  const lore = document.getElementById("lore");
   const hintStart = document.getElementById("hintStart");
   const loader = document.getElementById("loader");
   const loaderBar = document.getElementById("loaderBar");
@@ -158,6 +159,10 @@
     const brandPx = Math.max(20, Math.min(sw * 0.08, 68));
     brand.style.fontSize = (brandPx / s).toFixed(2) + "px";
     brand.style.strokeWidth = (brandPx / s * 0.103).toFixed(2) + "px";
+
+    // Map lettering: ~15px on a desktop, never under 10px on a phone
+    const lorePx = Math.max(10, Math.min(sw * 0.0105, 15));
+    lore.style.fontSize = (lorePx / s).toFixed(2) + "px";
 
     drawn = -1;
     draw(Math.round(current));

@@ -58,6 +58,63 @@ html, body {
 
 .overlay { pointer-events: none; }
 
+/* Historical names of the land, lettered like an old map. Sizes are in em of
+   the group, which script.js sets per screen so they stay legible on a phone. */
+.lore text {
+  text-anchor: middle;
+  font-family: "Playfair Display", Georgia, serif;
+  fill: #f6e3b4;
+  paint-order: stroke;
+  stroke: rgba(8, 5, 2, 0.88);
+  stroke-width: 0.3em;
+  stroke-linejoin: round;
+}
+.lore__region {
+  font-size: 1.5em;
+  font-style: italic;
+  letter-spacing: 0.08em;
+}
+.lore__sub {
+  font-size: 0.72em;
+  fill: #e9b86a;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.lore__site {
+  font-size: 1.05em;
+  font-style: italic;
+  letter-spacing: 0.1em;
+}
+.lore__note {
+  font-size: 0.66em;
+  fill: #e9b86a;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.lore__dot {
+  fill: #f2c983;
+  filter: drop-shadow(0 0 4px rgba(245, 185, 100, 0.9));
+}
+
+/* Hidden during the flight in; each name fades up in turn once the map lands */
+.lore text,
+.lore__dot {
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+.stage.is-end .lore text,
+.stage.is-end .lore__dot {
+  opacity: 1;
+  transition-delay: calc(0.4s + var(--i) * 0.35s);
+}
+.stage.is-end .lore__sub { opacity: 0.85; }
+.stage.is-end .lore__dot { animation: lore-pulse 2.6s ease-in-out infinite; }
+
+@keyframes lore-pulse {
+  50% { filter: drop-shadow(0 0 9px rgba(245, 185, 100, 1)); }
+}
+
 /* MAISON KOLKHETI — visible only inside the cursor spotlight */
 .brand {
   font: 500 68px "Playfair Display", Georgia, serif;
