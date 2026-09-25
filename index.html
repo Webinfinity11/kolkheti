@@ -6,8 +6,8 @@
 <title>MAISON KOLKHETI — Georgia, from the birth of the universe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:ital,wght@0,500;1,500&display=swap">
-<link rel="stylesheet" href="style.css?v=25">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=IM+Fell+English:ital@0;1&family=Playfair+Display:wght@500&display=swap">
+<link rel="stylesheet" href="style.css?v=26">
 </head>
 <body>
 
@@ -24,7 +24,13 @@
     <!-- Same 1280x720 coordinate space as the video frames; viewBox is set in script.js to crop like the canvas -->
     <svg class="overlay" id="overlay" viewBox="0 0 1280 720" preserveAspectRatio="none">
       <defs>
-        <!-- Cursor spotlight: soft circle that reveals the map illustration -->
+        <!-- Cursor spotlight: soft circle that reveals the map lettering -->
+        <!-- Burnished bronze, the palette of the Colchis illustration -->
+        <linearGradient id="loreGold" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fbe3b0"/>
+          <stop offset="0.55" stop-color="#e2ad63"/>
+          <stop offset="1" stop-color="#b3773a"/>
+        </linearGradient>
         <radialGradient id="spotGrad">
           <stop offset="0" stop-color="#fff" stop-opacity="1"/>
           <stop offset="0.4" stop-color="#fff" stop-opacity="1"/>
@@ -38,24 +44,20 @@
         </mask>
       </defs>
 
-      <!-- Illustrated map, used untouched; the transform lays its border over the constellation's stars -->
-      <g id="fleece" mask="url(#spotMask)">
-        <image href="assets/maison-colchia.webp" width="1536" height="1024" transform="matrix(0.54404 0.03096 0.05261 0.47610 189.38 65.14)"/>
-      </g>
-
-      <!-- Old-map lettering: the land's historical names, fading in with the map.
+      <!-- Old-map lettering: the land's historical names, shown only inside the
+           cursor spotlight (or under the finger on touch).
            Frame coordinates from each site's real longitude/latitude: Colchis at
            Kutaisi–Vani, Iberia at Mtskheta, the dot on Dmanisi. -->
-      <g class="lore" id="lore">
-        <text class="lore__region" x="548" y="334" style="--i:0">Colchis</text>
-        <text class="lore__sub" x="548" y="334" dy="2.1em" style="--i:1">Egrisi · Lazica</text>
+      <g class="lore" id="lore" mask="url(#spotMask)">
+        <text class="lore__region" x="548" y="334">Colchis</text>
+        <text class="lore__sub" x="548" y="334" dy="2.1em">Egrisi · Lazica</text>
 
-        <text class="lore__sub" x="795" y="383" dy="-2.6em" style="--i:2">Caucasian</text>
-        <text class="lore__region" x="795" y="383" style="--i:2">Iberia</text>
+        <text class="lore__sub" x="795" y="383" dy="-2.6em">Caucasian</text>
+        <text class="lore__region" x="795" y="383">Iberia</text>
 
-        <circle class="lore__dot" cx="736" cy="462" r="3.2" style="--i:3"/>
-        <text class="lore__site" x="736" y="462" dy="3.1em" style="--i:3">Dmanisi</text>
-        <text class="lore__note" x="736" y="462" dy="6.4em" style="--i:4"><tspan class="lore__taxon">Homo georgicus</tspan> · 1.8 million years ago</text>
+        <circle class="lore__dot" cx="736" cy="462" r="3.2"/>
+        <text class="lore__site" x="736" y="462" dy="2.7em">Dmanisi</text>
+        <text class="lore__note" x="736" y="462" dy="5.7em"><tspan class="lore__taxon">Homo georgicus</tspan> · 1.8 million years ago</text>
       </g>
 
       <!-- Revealed letter by letter through the same cursor spotlight -->

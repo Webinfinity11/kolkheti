@@ -58,62 +58,52 @@ html, body {
 
 .overlay { pointer-events: none; }
 
-/* Historical names of the land, lettered like an old map. Sizes are in em of
-   the group, which script.js sets per screen so they stay legible on a phone. */
+/* Historical names of the land, lettered like the engraved Colchis map:
+   burnished bronze with a dark umber edge and the same amber glow as the
+   illustration's border. Sizes are in em of the group, which script.js sets
+   per screen so they stay legible on a phone. */
 .lore text {
   text-anchor: middle;
-  font-family: "Playfair Display", Georgia, serif;
-  fill: #f6e3b4;
+  font-family: "IM Fell English", Georgia, serif;
+  fill: url(#loreGold);
   paint-order: stroke;
-  stroke: rgba(8, 5, 2, 0.88);
-  stroke-width: 0.3em;
+  stroke: #1f1206;
+  stroke-width: 0.26em;
   stroke-linejoin: round;
 }
+.lore {
+  filter: drop-shadow(0 0 6px rgba(240, 160, 80, 0.45));
+}
 .lore__region {
-  font-size: 1.5em;
+  font-size: 1.75em;
   font-style: italic;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 .lore__sub {
-  font-size: 0.72em;
-  fill: #e9b86a;
-  letter-spacing: 0.3em;
+  font-size: 0.78em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-  opacity: 0.85;
 }
 .lore__site {
-  font-size: 1.05em;
+  font-size: 1.2em;
   font-style: italic;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
 }
 .lore__note {
-  font-size: 0.72em;
-  fill: #e9b86a;
-  letter-spacing: 0.08em;
+  font-size: 0.8em;
+  letter-spacing: 0.06em;
 }
 /* A species name is always written as-is and in italics */
 .lore__taxon { font-style: italic; }
 .lore__dot {
-  fill: #f2c983;
-  filter: drop-shadow(0 0 4px rgba(245, 185, 100, 0.9));
+  fill: #f5c27a;
+  stroke: #1f1206;
+  stroke-width: 1.2;
+  animation: lore-pulse 2.6s ease-in-out infinite;
 }
-
-/* Hidden during the flight in; each name fades up in turn once the map lands */
-.lore text,
-.lore__dot {
-  opacity: 0;
-  transition: opacity 1.4s ease;
-}
-.stage.is-end .lore text,
-.stage.is-end .lore__dot {
-  opacity: 1;
-  transition-delay: calc(0.4s + var(--i) * 0.35s);
-}
-.stage.is-end .lore__sub { opacity: 0.85; }
-.stage.is-end .lore__dot { animation: lore-pulse 2.6s ease-in-out infinite; }
 
 @keyframes lore-pulse {
-  50% { filter: drop-shadow(0 0 9px rgba(245, 185, 100, 1)); }
+  50% { fill: #fff0c8; }
 }
 
 /* MAISON KOLKHETI — visible only inside the cursor spotlight */
