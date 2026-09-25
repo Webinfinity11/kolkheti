@@ -91,7 +91,7 @@ html, body {
   width: max-content;
   display: flex;
   align-items: center;
-  gap: clamp(14px, 2.6vw, 30px);
+  gap: clamp(28px, 4.5vw, 56px);
   opacity: 0;
   transform: translate(-50%, -8px);
   pointer-events: none;
@@ -101,15 +101,6 @@ html, body {
   opacity: 1;
   transform: translate(-50%, 0);
   pointer-events: auto;
-}
-
-/* Small amber diamond between the two links */
-.enter__sep {
-  width: 5px;
-  height: 5px;
-  background: #e0a458;
-  transform: rotate(45deg);
-  box-shadow: 0 0 8px rgba(240, 170, 90, 0.7);
 }
 
 /* Burnished gold lettering in the amber of the map illustration, with a slow
@@ -134,24 +125,10 @@ html, body {
 }
 .enter a:nth-of-type(2) { animation-delay: 2.25s; }
 
-.enter a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #f2c983, transparent);
-  transform: scaleX(0);
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
 .enter a:hover,
 .enter a:focus-visible {
   filter: drop-shadow(0 0 14px rgba(245, 185, 100, 0.75));
 }
-.enter a:hover::after,
-.enter a:focus-visible::after { transform: scaleX(1); }
 
 @keyframes gold-sheen {
   0% { background-position: 100% 0; }
@@ -163,7 +140,7 @@ html, body {
 }
 
 @media (max-width: 480px) {
-  .enter { gap: 16px; }
+  .enter { gap: 28px; }
   .enter a {
     font-size: 15px;
     letter-spacing: 0.18em;
