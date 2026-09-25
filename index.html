@@ -24,7 +24,7 @@
     <!-- Same 1280x720 coordinate space as the video frames; viewBox is set in script.js to crop like the canvas -->
     <svg class="overlay" id="overlay" viewBox="0 0 1280 720" preserveAspectRatio="none">
       <defs>
-        <!-- Cursor spotlight: soft circle that reveals the map lettering -->
+        <!-- Cursor spotlight: soft circle that reveals the map illustration and its lettering -->
         <!-- Burnished bronze, the palette of the Colchis illustration -->
         <linearGradient id="loreGold" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stop-color="#fbe3b0"/>
@@ -44,8 +44,13 @@
         </mask>
       </defs>
 
-      <!-- Old-map lettering: the land's historical names, shown only inside the
-           cursor spotlight (or under the finger on touch).
+      <!-- Illustrated map, used untouched; the transform lays its border over the constellation's stars -->
+      <g id="fleece" mask="url(#spotMask)">
+        <image href="assets/maison-colchia.webp" width="1536" height="1024" transform="matrix(0.54404 0.03096 0.05261 0.47610 189.38 65.14)"/>
+      </g>
+
+      <!-- Old-map lettering over the illustration: the land's historical names,
+           revealed together with it inside the cursor spotlight.
            Frame coordinates from each site's real longitude/latitude: Colchis at
            Kutaisi–Vani, Iberia at Mtskheta, the dot on Dmanisi. -->
       <g class="lore" id="lore" mask="url(#spotMask)">
