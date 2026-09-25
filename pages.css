@@ -169,18 +169,14 @@ a { color: inherit; }
   color: var(--text);
 }
 
-/* ---------- Two-column grid ---------- */
+/* ---------- Alternating rows ---------- */
 
 .grid-section { padding: clamp(16px, 3vh, 34px) 0 clamp(56px, 11vh, 120px); }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(30px, 5vh, 52px) clamp(18px, 2.6vw, 30px);
-}
-
-@media (min-width: 760px) {
-  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  gap: clamp(30px, 6vh, 64px);
 }
 
 @media (max-width: 759px) {
@@ -319,6 +315,29 @@ a { color: inherit; }
 .card__note {
   margin: 9px 0 0;
   color: var(--muted);
+}
+
+/* One piece per row: photo and text side by side at the same height, the
+   photo swapping sides every other row. */
+@media (min-width: 760px) {
+  .card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+    gap: clamp(18px, 2.6vw, 30px);
+  }
+  .card:nth-child(even) .card__frame { order: 2; }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(24px, 4vw, 56px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .card__name { font-size: clamp(22px, 2.4vw, 30px); }
 }
 
 /* ---------- Closing panel ---------- */
