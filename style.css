@@ -83,8 +83,7 @@ html, body {
 }
 
 /* Way into the catalogue — centred at the top, and only once the map is on
-   screen so it never competes with the animation. Framed like old brass
-   plaques, with a slow glow so they read as something to press. */
+   screen so it never competes with the animation. */
 .enter {
   position: absolute;
   top: clamp(18px, 4vh, 42px);
@@ -104,74 +103,70 @@ html, body {
   pointer-events: auto;
 }
 
+/* Small amber diamond between the two links */
 .enter__sep {
-  width: 6px;
-  height: 6px;
-  border: 1px solid var(--brass);
+  width: 5px;
+  height: 5px;
+  background: #e0a458;
   transform: rotate(45deg);
-  opacity: 0.8;
+  box-shadow: 0 0 8px rgba(240, 170, 90, 0.7);
 }
 
+/* Burnished gold lettering in the amber of the map illustration, with a slow
+   sheen running across it so the links read as alive and pressable */
 .enter a {
   position: relative;
-  padding: clamp(10px, 1.4vw, 14px) clamp(20px, 3vw, 36px);
-  font: 500 clamp(14px, 1.9vw, 19px)/1 "Playfair Display", Georgia, serif;
-  letter-spacing: 0.24em;
+  padding: 8px 2px;
+  font: 500 clamp(16px, 2.1vw, 22px)/1 "Playfair Display", Georgia, serif;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   text-decoration: none;
-  color: #e9cf96;
   white-space: nowrap;
-  background: radial-gradient(ellipse at center, rgba(58, 40, 14, 0.7), rgba(12, 8, 3, 0.75));
-  /* Double frame: a solid rule with a fainter one set out around it */
-  border: 1px solid rgba(200, 168, 106, 0.85);
-  outline: 1px solid rgba(200, 168, 106, 0.4);
-  outline-offset: 4px;
-  text-shadow: 0 0 10px rgba(242, 208, 140, 0.35);
-  animation: plaque-glow 3.2s ease-in-out infinite;
-  transition: color 0.4s ease, background 0.4s ease, outline-offset 0.4s ease, transform 0.4s ease;
+  color: #e9b86a;
+  background: linear-gradient(100deg, #a8692c 0%, #e9b86a 35%, #fff0c4 50%, #e9b86a 65%, #a8692c 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(240, 170, 90, 0.35));
+  animation: gold-sheen 4.5s ease-in-out infinite;
+  transition: filter 0.4s ease;
 }
-.enter a:nth-of-type(2) { animation-delay: 1.6s; }
+.enter a:nth-of-type(2) { animation-delay: 2.25s; }
 
-/* Diamonds riveted to either side of the frame */
-.enter a::before,
 .enter a::after {
   content: "";
   position: absolute;
-  top: 50%;
-  width: 7px;
-  height: 7px;
-  background: var(--brass);
-  transform: translateY(-50%) rotate(45deg);
-  box-shadow: 0 0 6px rgba(242, 208, 140, 0.6);
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #f2c983, transparent);
+  transform: scaleX(0);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.enter a::before { left: -9px; }
-.enter a::after { right: -9px; }
 
 .enter a:hover,
 .enter a:focus-visible {
-  color: #1a1206;
-  text-shadow: none;
-  background: linear-gradient(180deg, #f2ddad, #c8a86a 55%, #a8864a);
-  outline-offset: 7px;
-  transform: translateY(-1px);
-  animation-play-state: paused;
+  filter: drop-shadow(0 0 14px rgba(245, 185, 100, 0.75));
 }
+.enter a:hover::after,
+.enter a:focus-visible::after { transform: scaleX(1); }
 
-@keyframes plaque-glow {
-  0%, 100% { box-shadow: 0 0 0 rgba(242, 208, 140, 0), inset 0 0 8px rgba(242, 208, 140, 0.08); }
-  50% { box-shadow: 0 0 22px rgba(242, 208, 140, 0.45), inset 0 0 14px rgba(242, 208, 140, 0.22); }
+@keyframes gold-sheen {
+  0% { background-position: 100% 0; }
+  60%, 100% { background-position: 0 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .enter a { animation: none; }
+  .enter a { animation: none; background-position: 50% 0; }
 }
 
 @media (max-width: 480px) {
-  .enter { gap: 18px; }
+  .enter { gap: 16px; }
   .enter a {
-    padding: 10px 16px;
-    font-size: 13px;
-    letter-spacing: 0.16em;
+    font-size: 15px;
+    letter-spacing: 0.18em;
   }
 }
 
