@@ -15,8 +15,8 @@
   const stage = document.querySelector(".stage");
   const overlay = document.getElementById("overlay");
   const hit = document.getElementById("hit");
-  const brand = document.querySelector(".brand");
-  const lore = document.getElementById("lore");
+  const brand = document.getElementById("brand");
+  const brandTag = brand.querySelector(".brand__tag");
   const hintStart = document.getElementById("hintStart");
   const loader = document.getElementById("loader");
   const loaderBar = document.getElementById("loaderBar");
@@ -155,14 +155,11 @@
     overlay.setAttribute("viewBox", `${(FRAME_W - vw) / 2} ${(FRAME_H - vh) * alignY(vh)} ${vw} ${vh}`);
 
     // Cover zooms hard on a phone, so size the wordmark off the stage instead
-    // of leaving it at a fixed 68 frame units (~80px on a 390px wide screen).
-    const brandPx = Math.max(20, Math.min(sw * 0.08, 68));
+    // of in fixed frame units; it has to fit across the middle of the map.
+    const brandPx = Math.max(20, Math.min(sw * 0.042, 50));
     brand.style.fontSize = (brandPx / s).toFixed(2) + "px";
-    brand.style.strokeWidth = (brandPx / s * 0.103).toFixed(2) + "px";
-
-    // Map lettering: ~15px on a desktop, never under 10px on a phone
-    const lorePx = Math.max(10, Math.min(sw * 0.0105, 15));
-    lore.style.fontSize = (lorePx / s).toFixed(2) + "px";
+    // BORN RARE is set small, but never under 9px or it can't be read
+    brandTag.style.fontSize = (Math.max(9, brandPx * 0.3) / s).toFixed(2) + "px";
 
     drawn = -1;
     draw(Math.round(current));
@@ -228,7 +225,7 @@
   }
 
   // ---------- Spotlight reveal ----------
-  // The fleece only shows inside a soft circle that follows the cursor on
+  // The tiger skin only shows inside a soft circle that follows the cursor on
   // desktop and the finger while it stays pressed on touch — same gesture,
   // different input. Screen px, scaled down so it can't swallow a phone screen.
   const spotlightR = () => Math.max(110, Math.min(stage.clientWidth * 0.32, 260));
@@ -279,7 +276,7 @@
     pointer.active = false;
   });
 
-  // Touch: press on the map and drag — the fleece follows the finger and fades
+  // Touch: press on the map and drag — the skin follows the finger and fades
   // back out on release. Pointer capture keeps the drag alive outside the
   // outline once it has started.
   hit.addEventListener("pointerdown", (e) => {

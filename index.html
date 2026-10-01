@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=IM+Fell+English:ital@0;1&family=Playfair+Display:wght@500&display=swap">
-<link rel="stylesheet" href="style.css?v=26">
+<link rel="stylesheet" href="style.css?v=27">
 </head>
 <body>
 
@@ -24,13 +24,13 @@
     <!-- Same 1280x720 coordinate space as the video frames; viewBox is set in script.js to crop like the canvas -->
     <svg class="overlay" id="overlay" viewBox="0 0 1280 720" preserveAspectRatio="none">
       <defs>
-        <!-- Cursor spotlight: soft circle that reveals the map illustration and its lettering -->
-        <!-- Burnished bronze, the palette of the Colchis illustration -->
-        <linearGradient id="loreGold" x1="0" y1="0" x2="0" y2="1">
+        <!-- Burnished gold for the wordmark, matching the menu lettering -->
+        <linearGradient id="brandGold" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stop-color="#fbe3b0"/>
           <stop offset="0.55" stop-color="#e2ad63"/>
           <stop offset="1" stop-color="#b3773a"/>
         </linearGradient>
+        <!-- Cursor spotlight: soft circle that reveals the tiger skin -->
         <radialGradient id="spotGrad">
           <stop offset="0" stop-color="#fff" stop-opacity="1"/>
           <stop offset="0.4" stop-color="#fff" stop-opacity="1"/>
@@ -44,29 +44,16 @@
         </mask>
       </defs>
 
-      <!-- Illustrated map, used untouched; the transform lays its border over the constellation's stars -->
+      <!-- Tiger skin cut to the outline of Georgia; the transform lays its border over the constellation's stars -->
       <g id="fleece" mask="url(#spotMask)">
-        <image href="assets/maison-colchia.webp" width="1536" height="1024" transform="matrix(0.54404 0.03096 0.05261 0.47610 189.38 65.14)"/>
+        <image href="assets/tiger-skin.webp" width="1536" height="1024" transform="matrix(0.54404 0.03096 0.05261 0.47610 189.38 65.14)"/>
       </g>
 
-      <!-- Old-map lettering over the illustration: the land's historical names,
-           revealed together with it inside the cursor spotlight.
-           Frame coordinates from each site's real longitude/latitude: Colchis at
-           Kutaisi–Vani, Iberia at Mtskheta, the dot on Dmanisi. -->
-      <g class="lore" id="lore" mask="url(#spotMask)">
-        <text class="lore__region" x="548" y="334">Colchis</text>
-        <text class="lore__sub" x="548" y="334" dy="2.1em">Egrisi · Lazica</text>
-
-        <text class="lore__sub" x="795" y="383" dy="-2.6em">Caucasian</text>
-        <text class="lore__region" x="795" y="383">Iberia</text>
-
-        <circle class="lore__dot" cx="736" cy="462" r="3.2"/>
-        <text class="lore__site" x="736" y="462" dy="2.7em">Dmanisi</text>
-        <text class="lore__note" x="736" y="462" dy="5.7em"><tspan class="lore__taxon">Homo georgicus</tspan> · 1.8 million years ago</text>
+      <!-- Wordmark in the middle of the map; fades in once the scroll reaches it -->
+      <g class="brand" id="brand">
+        <text class="brand__name" x="640" y="352">MAISON COLCHIA</text>
+        <text class="brand__tag" x="640" y="352" dy="2.4em">BORN RARE</text>
       </g>
-
-      <!-- Revealed letter by letter through the same cursor spotlight -->
-      <text class="brand" x="640" y="352" text-anchor="middle" mask="url(#spotMask)">MAISON KOLKHETI</text>
 
       <!-- Hover area: outline of Georgia traced from the last video frame -->
       <polygon id="hit" class="hit" points="258,160 285,137 340,143 410,172 470,200 525,188 580,200 620,237 680,260 700,285 760,265 830,265 905,300 900,345 985,385 960,420 1020,475 995,510 900,470 850,450 800,488 720,487 650,500 600,445 550,452 480,440 435,440 460,380 440,300 420,265 380,230 300,195"/>
@@ -85,6 +72,6 @@
   </div>
 </main>
 
-<script src="script.js?v=22"></script>
+<script src="script.js?v=23"></script>
 </body>
 </html>
