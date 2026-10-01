@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Inter:wght@400;500&family=Playfair+Display:wght@500&display=swap">
-<link rel="stylesheet" href="style.css?v=34">
+<link rel="stylesheet" href="style.css?v=35">
 </head>
 <body>
 
@@ -49,6 +49,14 @@
           <stop offset="0.6" stop-color="#000" stop-opacity="0.35"/>
           <stop offset="1" stop-color="#000" stop-opacity="0"/>
         </radialGradient>
+        <!-- Bolnisi cross, the 5th-century Georgian cross of the national flag -->
+        <g id="bolnisi">
+          <path d="M-1.1 -1.6 Q-1.5 -6 -4.6 -9.6 Q0 -8.2 4.6 -9.6 Q1.5 -6 1.1 -1.6 Z"/>
+          <path d="M-1.1 -1.6 Q-1.5 -6 -4.6 -9.6 Q0 -8.2 4.6 -9.6 Q1.5 -6 1.1 -1.6 Z" transform="rotate(90)"/>
+          <path d="M-1.1 -1.6 Q-1.5 -6 -4.6 -9.6 Q0 -8.2 4.6 -9.6 Q1.5 -6 1.1 -1.6 Z" transform="rotate(180)"/>
+          <path d="M-1.1 -1.6 Q-1.5 -6 -4.6 -9.6 Q0 -8.2 4.6 -9.6 Q1.5 -6 1.1 -1.6 Z" transform="rotate(270)"/>
+          <circle r="1.9"/>
+        </g>
         <mask id="spotMask" maskUnits="userSpaceOnUse" x="-2000" y="-3000" width="5280" height="7000">
           <circle id="spot" cx="-999" cy="-999" r="0" fill="url(#spotGrad)"/>
         </mask>
@@ -64,14 +72,7 @@
         <ellipse class="brand__halo" cx="676" cy="349" rx="250" ry="70"/>
         <g class="brand">
           <text class="brand__name" x="676" y="340" textLength="372" lengthAdjust="spacing">Maison Colchia</text>
-          <!-- Bolnisi cross, the 5th-century Georgian cross of the national flag -->
-          <g class="brand__cross" transform="translate(673 357) scale(0.95)">
-            <path d="M-1.1 -1.6 Q-1.5 -6 -4.6 -9.6 Q0 -8.2 4.6 -9.6 Q1.5 -6 1.1 -1.6 Z"/>
-            <path d="M-1.1 -1.6 Q-1.5 -6 -4.6 -9.6 Q0 -8.2 4.6 -9.6 Q1.5 -6 1.1 -1.6 Z" transform="rotate(90)"/>
-            <path d="M-1.1 -1.6 Q-1.5 -6 -4.6 -9.6 Q0 -8.2 4.6 -9.6 Q1.5 -6 1.1 -1.6 Z" transform="rotate(180)"/>
-            <path d="M-1.1 -1.6 Q-1.5 -6 -4.6 -9.6 Q0 -8.2 4.6 -9.6 Q1.5 -6 1.1 -1.6 Z" transform="rotate(270)"/>
-            <circle r="1.9"/>
-          </g>
+          <use class="brand__cross" href="#bolnisi" transform="translate(673 357) scale(0.95)"/>
           <text class="brand__tag" x="676" y="383" textLength="112" lengthAdjust="spacing">BORN RARE</text>
         </g>
       </g>
@@ -90,9 +91,40 @@
       <a href="/artists">Artists</a>
       <a href="/jewelry">Jewelry</a>
     </nav>
+
+    <!-- Tells visitors the map hides something; gone once they find it -->
+    <p class="map-hint" aria-hidden="true">
+      <span class="map-hint__mouse">Hover over the map</span>
+      <span class="map-hint__touch">Touch and hold the map</span>
+    </p>
+
+    <button class="next-btn" type="button" id="nextOpen">Next Exhibition</button>
   </div>
 </main>
 
-<script src="script.js?v=24"></script>
+<!-- Sign-up for the next exhibition. Submissions go to Web3Forms, which
+     emails them to the address behind ACCESS_KEY in script.js. -->
+<dialog class="signup" id="signup" aria-labelledby="signupTitle">
+  <button class="signup__close" type="button" id="signupClose" aria-label="Close">×</button>
+  <form class="signup__form" id="signupForm" novalidate>
+    <h2 class="signup__title" id="signupTitle">Next Exhibition</h2>
+    <svg class="signup__cross" viewBox="-10 -10 20 20" aria-hidden="true"><use href="#bolnisi"/></svg>
+    <p class="signup__lead">Leave your email and we will let you know when the next Maison Colchia exhibition opens.</p>
+    <label class="signup__field">
+      <span>Name</span>
+      <input type="text" name="name" autocomplete="name">
+    </label>
+    <label class="signup__field">
+      <span>Email</span>
+      <input type="email" name="email" autocomplete="email" required>
+    </label>
+    <!-- Honeypot: people never see it, bots fill it in -->
+    <input class="signup__trap" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off">
+    <button class="signup__submit" type="submit">Notify me</button>
+    <p class="signup__status" id="signupStatus" role="status"></p>
+  </form>
+</dialog>
+
+<script src="script.js?v=25"></script>
 </body>
 </html>

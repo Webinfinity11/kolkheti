@@ -224,6 +224,7 @@
   const spot = document.getElementById("spot");
   const pointer = { x: -999, y: -999, active: false, touch: false };
   const smooth = { x: -999, y: -999, r: 0 };
+  let found = false;
 
   function toSvgPoint(clientX, clientY) {
     const pt = overlay.createSVGPoint();
@@ -246,6 +247,9 @@
       if (smooth.r < 1) { smooth.x = p.x; smooth.y = p.y; }
       smooth.x += (p.x - smooth.x) * 0.18;
       smooth.y += (p.y - smooth.y) * 0.18;
+      // Once the spotlight has been over the map itself, the visitor has found
+      // it: the hint under the menu can go for good.
+      if (on && !found && hit.isPointInFill(p)) { found = true; stage.classList.add("has-found"); }
     }
     smooth.r += (targetR - smooth.r) * 0.12;
     if (smooth.r < 0.5 && targetR === 0) smooth.r = 0;
@@ -317,6 +321,59 @@
   window.addEventListener("resize", onResize);
   window.addEventListener("orientationchange", () => setTimeout(onResize, 120));
   window.addEventListener("scroll", onScroll, { passive: true });
+
+  // ---------- Next Exhibition sign-up ----------
+  // Web3Forms access key: each sign-up is emailed to the address the key was
+  // created with. It is public by design. Until it is set, the form says
+  // sign-ups open soon instead of pretending to save the email.
+  const ACCESS_KEY = "";
+  const signup = document.getElementById("signup");
+  const form = document.getElementById("signupForm");
+  const status = document.getElementById("signupStatus");
+  const submit = form.querySelector(".signup__submit");
+
+  const say = (text, error) => {
+    status.textContent = text;
+    status.classList.toggle("is-error", !!error);
+  };
+
+  document.getElementById("nextOpen").addEventListener("click", () => {
+    say("");
+    signup.showModal();
+  });
+  document.getElementById("signupClose").addEventListener("click", () => signup.close());
+  // A click on the backdrop lands on the dialog element itself
+  signup.addEventListener("click", (e) => { if (e.target === signup) signup.close(); });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!form.email.checkValidity()) return say("Please enter a valid email address.", true);
+    if (form.botcheck.checked) return;
+    if (!ACCESS_KEY) return say("Sign-ups open soon — please check back.", true);
+    submit.disabled = true;
+    say("Sending…");
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: ACCESS_KEY,
+          subject: "Next Exhibition sign-up — Maison Colchia",
+          from_name: "Maison Colchia website",
+          name: form.name.value.trim(),
+          email: form.email.value.trim(),
+        }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message);
+      form.reset();
+      say("Thank you — we will let you know.");
+    } catch {
+      say("Something went wrong. Please try again.", true);
+    } finally {
+      submit.disabled = false;
+    }
+  });
 
   preload().then(() => {
     loader.classList.add("is-done");
