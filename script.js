@@ -224,7 +224,6 @@
   const spot = document.getElementById("spot");
   const pointer = { x: -999, y: -999, active: false, touch: false };
   const smooth = { x: -999, y: -999, r: 0 };
-  let found = false;
 
   function toSvgPoint(clientX, clientY) {
     const pt = overlay.createSVGPoint();
@@ -247,9 +246,6 @@
       if (smooth.r < 1) { smooth.x = p.x; smooth.y = p.y; }
       smooth.x += (p.x - smooth.x) * 0.18;
       smooth.y += (p.y - smooth.y) * 0.18;
-      // Once the spotlight has been over the map itself, the visitor has found
-      // it: the hint under the menu can go for good.
-      if (on && !found && hit.isPointInFill(p)) { found = true; stage.classList.add("has-found"); }
     }
     smooth.r += (targetR - smooth.r) * 0.12;
     if (smooth.r < 0.5 && targetR === 0) smooth.r = 0;

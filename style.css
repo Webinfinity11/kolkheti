@@ -155,19 +155,20 @@ html, body {
   }
 }
 
-/* "Hover over the map": a quiet line under the menu, shown once the map is
-   on screen and gone once the spotlight has been over the map */
+/* "Hover over the map": a line under the menu, shown for as long as the map
+   is on screen so nobody misses that it hides something */
 .map-hint {
   position: absolute;
   top: calc(clamp(18px, 4vh, 42px) + 46px);
   left: 50%;
   margin: 0;
   transform: translateX(-50%);
-  font: 400 11px/1 "Inter", system-ui, sans-serif;
-  letter-spacing: 0.32em;
+  font: 500 13px/1 "Inter", system-ui, sans-serif;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: rgba(232, 214, 176, 0.7);
+  color: #ecd3a0;
+  text-shadow: 0 0 10px rgba(240, 180, 90, 0.45);
   opacity: 0;
   pointer-events: none;
   transition: opacity 1s ease;
@@ -175,15 +176,14 @@ html, body {
 .map-hint::before {
   content: "";
   display: inline-block;
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   margin: 0 12px 2px 0;
   border-radius: 50%;
   background: var(--brass);
   animation: hint-pulse 2s ease-in-out infinite;
 }
 .stage.is-end .map-hint { opacity: 1; transition-delay: 0.6s; }
-.stage.is-end.has-found .map-hint { opacity: 0; transition-delay: 1.2s; }
 .map-hint__touch { display: none; }
 @media (hover: none) {
   .map-hint__mouse { display: none; }
@@ -193,11 +193,12 @@ html, body {
   50% { opacity: 0.25; transform: scale(0.7); }
 }
 
-/* Next Exhibition — a gold outline button at the bottom right */
+/* Next Exhibition — a gold outline button at the top right, level with the
+   menu; on a phone there is no room beside the menu, so it sits at the bottom */
 .next-btn {
   position: absolute;
+  top: calc(clamp(18px, 4vh, 42px) - 4px);
   right: clamp(18px, 4vw, 48px);
-  bottom: clamp(22px, 5vh, 48px);
   padding: 14px 26px;
   border: 1px solid rgba(214, 170, 96, 0.6);
   border-radius: 0;
@@ -208,7 +209,7 @@ html, body {
   text-transform: uppercase;
   cursor: pointer;
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(-8px);
   pointer-events: none;
   transition: opacity 1s ease, transform 1s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
@@ -226,6 +227,8 @@ html, body {
 }
 @media (max-width: 600px) {
   .next-btn {
+    top: auto;
+    bottom: clamp(22px, 5vh, 48px);
     right: 50%;
     transform: translate(50%, 8px);
     padding: 13px 22px;
@@ -234,8 +237,8 @@ html, body {
   .stage.is-end .next-btn { transform: translate(50%, 0); }
   .map-hint {
     top: calc(clamp(18px, 4vh, 42px) + 40px);
-    font-size: 10px;
-    letter-spacing: 0.24em;
+    font-size: 11px;
+    letter-spacing: 0.22em;
   }
 }
 
