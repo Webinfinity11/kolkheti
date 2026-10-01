@@ -132,6 +132,9 @@ html, body {
   transition: filter 0.4s ease;
 }
 .enter a:nth-of-type(2) { animation-delay: 2.25s; }
+/* Letter-spacing leaves a gap after the last letter; take it back so the
+   menu is centred on its letters, like the hint under it */
+.enter a:last-child { margin-right: -0.22em; }
 
 .enter a:hover,
 .enter a:focus-visible {
@@ -144,7 +147,8 @@ html, body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .enter a { animation: none; background-position: 50% 0; }
+  .enter a,
+  .map-hint { animation: none; background-position: 50% 0; }
 }
 
 @media (max-width: 480px) {
@@ -156,41 +160,36 @@ html, body {
 }
 
 /* "Hover over the map": a line under the menu, shown for as long as the map
-   is on screen so nobody misses that it hides something */
+   is on screen, in the same burnished gold with a running sheen as the menu */
 .map-hint {
   position: absolute;
   top: calc(clamp(18px, 4vh, 42px) + 46px);
   left: 50%;
   margin: 0;
+  /* letter-spacing leaves a trailing gap; indent by the same to centre it */
+  padding-left: 0.3em;
   transform: translateX(-50%);
-  font: 500 13px/1 "Inter", system-ui, sans-serif;
+  font: 500 13px/1.4 "Inter", system-ui, sans-serif;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: #ecd3a0;
-  text-shadow: 0 0 10px rgba(240, 180, 90, 0.45);
+  color: #e9b86a;
+  background: linear-gradient(100deg, #a8692c 0%, #e9b86a 35%, #fff0c4 50%, #e9b86a 65%, #a8692c 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(240, 170, 90, 0.35));
+  animation: gold-sheen 4.5s ease-in-out infinite 1.1s;
   opacity: 0;
   pointer-events: none;
   transition: opacity 1s ease;
-}
-.map-hint::before {
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  margin: 0 12px 2px 0;
-  border-radius: 50%;
-  background: var(--brass);
-  animation: hint-pulse 2s ease-in-out infinite;
 }
 .stage.is-end .map-hint { opacity: 1; transition-delay: 0.6s; }
 .map-hint__touch { display: none; }
 @media (hover: none) {
   .map-hint__mouse { display: none; }
   .map-hint__touch { display: inline; }
-}
-@keyframes hint-pulse {
-  50% { opacity: 0.25; transform: scale(0.7); }
 }
 
 /* Next Exhibition — a gold outline button at the top right, level with the
