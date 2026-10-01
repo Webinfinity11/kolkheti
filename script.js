@@ -15,8 +15,6 @@
   const stage = document.querySelector(".stage");
   const overlay = document.getElementById("overlay");
   const hit = document.getElementById("hit");
-  const brand = document.getElementById("brand");
-  const brandTag = brand.querySelector(".brand__tag");
   const hintStart = document.getElementById("hintStart");
   const loader = document.getElementById("loader");
   const loaderBar = document.getElementById("loaderBar");
@@ -154,12 +152,6 @@
     const vh = sh / s;
     overlay.setAttribute("viewBox", `${(FRAME_W - vw) / 2} ${(FRAME_H - vh) * alignY(vh)} ${vw} ${vh}`);
 
-    // Cover zooms hard on a phone, so size the wordmark off the stage instead
-    // of in fixed frame units; it has to fit across the middle of the map.
-    const brandPx = Math.max(20, Math.min(sw * 0.042, 50));
-    brand.style.fontSize = (brandPx / s).toFixed(2) + "px";
-    // BORN RARE is set small, but never under 9px or it can't be read
-    brandTag.style.fontSize = (Math.max(9, brandPx * 0.3) / s).toFixed(2) + "px";
 
     drawn = -1;
     draw(Math.round(current));
