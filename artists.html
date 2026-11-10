@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500&display=swap">
-<link rel="stylesheet" href="pages.css?v=10">
+<link rel="stylesheet" href="pages.css?v=11">
 </head>
-<body>
+<body data-page="artists">
 
 <header class="site-head">
   <div class="wrap site-head__in">
@@ -27,13 +27,13 @@
 
   <section class="hero">
     <div class="wrap">
-      <span class="tag hero__tag">Collection</span>
-      <h1>Artists</h1>
-      <p>
+      <span class="tag hero__tag" data-c="tag">Collection</span>
+      <h1 data-c="title">Artists</h1>
+      <p data-c="intro">
         Six authors whose work belongs to the MAISON KOLKHETI collection. Each
         of them reads the myth of Colchis in their own language.
       </p>
-      <div class="hero__meta tag">
+      <div class="hero__meta tag" data-c="meta">
         <span><b>06</b>Artists</span>
         <span><b>2018—2025</b>Period</span>
         <span><b>Tbilisi</b>On view</span>
@@ -45,7 +45,7 @@
        object-fit: cover once the photography lands; --a / --b only tint the
        placeholder and go with it. -->
   <section class="grid-section">
-    <div class="wrap grid">
+    <div class="wrap grid" data-c="items">
 
       <article class="card" style="--a:#1d1610; --b:#3b2b18">
         <div class="card__frame">
@@ -160,13 +160,13 @@
     <div class="wrap closing__in">
       <div>
         <span class="tag hero__tag">Contact</span>
-        <h2>Interested in a work?</h2>
-        <p>
+        <h2 data-c="closingTitle">Interested in a work?</h2>
+        <p data-c="closingText">
           Write to us for availability and prices — part of the collection is
           on permanent view.
         </p>
       </div>
-      <a class="btn" href="mailto:info@kolkheti.ge">Get in touch</a>
+      <a class="btn" data-c="email" href="mailto:info@kolkheti.ge">Get in touch</a>
     </div>
   </section>
 
@@ -190,6 +190,6 @@
   </div>
 </div>
 
-<script src="pages.js?v=7"></script>
+<script src="pages.js?v=8"></script>
 </body>
 </html>

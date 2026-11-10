@@ -1,6 +1,60 @@
-/* Shared behaviour for the catalogue pages: the detail sheet, reveal on
-   scroll, and the scroll progress line in the header. */
+/* Shared behaviour for the catalogue pages: content from /admin, the detail
+   sheet, reveal on scroll, and the scroll progress line in the header. */
 (() => {
+  const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
+  const esc = (s) =>
+    String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  // ---------- Content ----------
+  // The HTML ships with the original copy, so the page reads fine before (or
+  // without) this; once /api/content answers, the admin's version replaces it.
+  const page = document.body.dataset.page;
+  const slot = (name) => document.querySelector(`[data-c="${name}"]`);
+
+  function card(it, i) {
+    const no = String(i + 1).padStart(2, "0");
+    const mark = ROMAN[i] || String(i + 1);
+    const pic = it.image
+      ? `<img class="card__img" src="${esc(it.image)}" alt="${esc(it.name)}" loading="lazy">`
+      : `<div class="card__ph">${mark}</div>`;
+    return `
+      <article class="card" style="--a:${esc(it.a)}; --b:${esc(it.b)}">
+        <div class="card__frame">
+          ${pic}
+          <span class="tag card__no">${no}</span>
+        </div>
+        <div class="card__body">
+          <h2 class="card__name">${esc(it.name)}</h2>
+          <div class="card__rule"></div>
+          ${it.medium ? `<p class="tag card__medium">${esc(it.medium)}</p>` : ""}
+          ${it.note ? `<p class="card__note">${esc(it.note)}</p>` : ""}
+          <button class="card__cta" type="button" data-view data-mark="${mark}">View</button>
+        </div>
+      </article>`;
+  }
+
+  function render(c) {
+    const s = c[page];
+    if (!s) return;
+    const set = (name, text) => { const el = slot(name); if (el) el.textContent = text; };
+    set("tag", s.tag);
+    set("title", s.title);
+    set("intro", s.intro);
+    set("closingTitle", s.closingTitle);
+    set("closingText", s.closingText);
+    const meta = slot("meta");
+    if (meta) meta.innerHTML = s.meta.map((m) => `<span><b>${esc(m.value)}</b>${esc(m.label)}</span>`).join("");
+    const items = slot("items");
+    if (items) items.innerHTML = s.items.map(card).join("");
+    const mail = slot("email");
+    if (mail && c.contact?.email) mail.href = "mailto:" + c.contact.email;
+    document.title = `${s.title} — MAISON KOLKHETI`;
+  }
+
+  const ready = page
+    ? fetch("/api/content").then((r) => (r.ok ? r.json() : null)).then((c) => c && render(c)).catch(() => {})
+    : Promise.resolve();
+
   // ---------- Detail sheet ----------
   const detail = document.getElementById("detail");
 
@@ -15,12 +69,22 @@
     function open(card) {
       lastFocused = document.activeElement;
 
-      // Carry the card's own tint over so the sheet reads as the same piece
-      // rather than a generic panel.
-      const tint = getComputedStyle(card.querySelector(".card__ph"));
+      // Carry the card's own tint (or photo) over so the sheet reads as the
+      // same piece rather than a generic panel.
+      const tint = getComputedStyle(card);
       frame.style.setProperty("--a", tint.getPropertyValue("--a"));
       frame.style.setProperty("--b", tint.getPropertyValue("--b"));
-      mark.textContent = card.querySelector(".card__ph").textContent.trim();
+      frame.querySelector("img")?.remove();
+      const img = card.querySelector(".card__img");
+      if (img) {
+        const big = document.createElement("img");
+        big.src = img.src;
+        big.alt = img.alt;
+        frame.prepend(big);
+        mark.textContent = "";
+      } else {
+        mark.textContent = card.querySelector(".card__ph")?.textContent.trim() || "";
+      }
 
       title.textContent = card.querySelector(".card__name").textContent.trim();
       note.textContent = [
@@ -39,8 +103,10 @@
       lastFocused?.focus();
     }
 
-    document.querySelectorAll("[data-view]").forEach((btn) => {
-      btn.addEventListener("click", () => open(btn.closest(".card")));
+    // Delegated, because the cards are re-rendered once content arrives
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-view]");
+      if (btn) open(btn.closest(".card"));
     });
 
     close.addEventListener("click", hide);
@@ -68,16 +134,13 @@
       requestAnimationFrame(paint);
     }, { passive: true });
     paint();
+    ready.then(paint);
   }
 
   // ---------- Reveal on scroll ----------
-  const cards = document.querySelectorAll(".card");
-  if (!cards.length) return;
-
   const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (still || !("IntersectionObserver" in window)) return;
 
-  cards.forEach((c) => c.classList.add("will-reveal"));
   const io = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
@@ -86,5 +149,11 @@
     });
   }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
 
-  cards.forEach((c) => io.observe(c));
+  // Start after the content swap so the new cards are the ones that reveal
+  ready.then(() => {
+    document.querySelectorAll(".card").forEach((c) => {
+      c.classList.add("will-reveal");
+      io.observe(c);
+    });
+  });
 })();

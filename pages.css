@@ -443,6 +443,13 @@ a { color: inherit; }
   letter-spacing: 0.2em;
   color: rgba(232, 180, 74, 0.38);
 }
+.detail__frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .detail__body { padding: clamp(18px, 3vw, 28px); }
 .detail__body strong {

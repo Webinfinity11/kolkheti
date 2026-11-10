@@ -8,9 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500&display=swap">
-<link rel="stylesheet" href="pages.css?v=10">
+<link rel="stylesheet" href="pages.css?v=11">
 </head>
-<body>
+<body data-page="jewelry">
 
 <header class="site-head">
   <div class="wrap site-head__in">
@@ -27,13 +27,13 @@
 
   <section class="hero">
     <div class="wrap">
-      <span class="tag hero__tag">Collection</span>
-      <h1>Jewelry</h1>
-      <p>
+      <span class="tag hero__tag" data-c="tag">Collection</span>
+      <h1 data-c="title">Jewelry</h1>
+      <p data-c="intro">
         Two collections, one source — Colchian goldsmithing. Every piece is
         finished by hand in the Tbilisi workshop.
       </p>
-      <div class="hero__meta tag">
+      <div class="hero__meta tag" data-c="meta">
         <span><b>02</b>Collections</span>
         <span><b>14K / 925</b>Metal</span>
         <span><b>By hand</b>Made</span>
@@ -43,7 +43,7 @@
 
   <!-- Two columns, same system as the artists page. -->
   <section class="grid-section">
-    <div class="wrap grid">
+    <div class="wrap grid" data-c="items">
 
       <article class="card" style="--a:#231a0d; --b:#5b441a">
         <div class="card__frame">
@@ -87,13 +87,13 @@
     <div class="wrap closing__in">
       <div>
         <span class="tag hero__tag">Contact</span>
-        <h2>Commission a piece</h2>
-        <p>
+        <h2 data-c="closingTitle">Commission a piece</h2>
+        <p data-c="closingText">
           Pieces are available at the workshop and to order. Write to us for
           prices and lead times.
         </p>
       </div>
-      <a class="btn" href="mailto:info@kolkheti.ge">Get in touch</a>
+      <a class="btn" data-c="email" href="mailto:info@kolkheti.ge">Get in touch</a>
     </div>
   </section>
 
@@ -117,6 +117,6 @@
   </div>
 </div>
 
-<script src="pages.js?v=7"></script>
+<script src="pages.js?v=8"></script>
 </body>
 </html>

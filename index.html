@@ -102,14 +102,13 @@
   </div>
 </main>
 
-<!-- Sign-up for the next exhibition. Submissions go to Web3Forms, which
-     emails them to the address behind ACCESS_KEY in script.js. -->
+<!-- Sign-up for the next exhibition. Submissions go to /api/signup and show up in /admin. -->
 <dialog class="signup" id="signup" aria-labelledby="signupTitle">
   <button class="signup__close" type="button" id="signupClose" aria-label="Close">×</button>
   <form class="signup__form" id="signupForm" novalidate>
-    <h2 class="signup__title" id="signupTitle">Next Exhibition</h2>
+    <h2 class="signup__title" id="signupTitle" data-c="signupTitle">Next Exhibition</h2>
     <svg class="signup__cross" viewBox="-10 -10 20 20" aria-hidden="true"><use href="#bolnisi"/></svg>
-    <p class="signup__lead">Leave your email and we will let you know when the next Maison Colchia exhibition opens.</p>
+    <p class="signup__lead" data-c="signupLead">Leave your email and we will let you know when the next Maison Colchia exhibition opens.</p>
     <label class="signup__field">
       <span>Name</span>
       <input type="text" name="name" autocomplete="name">
@@ -125,6 +124,6 @@
   </form>
 </dialog>
 
-<script src="script.js?v=26"></script>
+<script src="script.js?v=27"></script>
 </body>
 </html>

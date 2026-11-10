@@ -319,10 +319,8 @@
   window.addEventListener("scroll", onScroll, { passive: true });
 
   // ---------- Next Exhibition sign-up ----------
-  // Web3Forms access key: each sign-up is emailed to the address the key was
-  // created with. It is public by design. Until it is set, the form says
-  // sign-ups open soon instead of pretending to save the email.
-  const ACCESS_KEY = "";
+  // Sign-ups are stored by /api/signup and listed in /admin. The dialog's
+  // title and lead text come from the admin content too.
   const signup = document.getElementById("signup");
   const form = document.getElementById("signupForm");
   const status = document.getElementById("signupStatus");
@@ -332,6 +330,15 @@
     status.textContent = text;
     status.classList.toggle("is-error", !!error);
   };
+
+  fetch("/api/content")
+    .then((r) => (r.ok ? r.json() : null))
+    .then((c) => {
+      if (!c?.home) return;
+      if (c.home.signupTitle) document.querySelector('[data-c="signupTitle"]').textContent = c.home.signupTitle;
+      if (c.home.signupLead) document.querySelector('[data-c="signupLead"]').textContent = c.home.signupLead;
+    })
+    .catch(() => {});
 
   document.getElementById("nextOpen").addEventListener("click", () => {
     say("");
@@ -345,23 +352,18 @@
     e.preventDefault();
     if (!form.email.checkValidity()) return say("Please enter a valid email address.", true);
     if (form.botcheck.checked) return;
-    if (!ACCESS_KEY) return say("Sign-ups open soon — please check back.", true);
     submit.disabled = true;
     say("Sending…");
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
+      const res = await fetch("/api/signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          access_key: ACCESS_KEY,
-          subject: "Next Exhibition sign-up — Maison Colchia",
-          from_name: "Maison Colchia website",
           name: form.name.value.trim(),
           email: form.email.value.trim(),
         }),
       });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.message);
+      if (!res.ok) throw new Error();
       form.reset();
       say("Thank you — we will let you know.");
     } catch {

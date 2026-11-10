@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin — MAISON KOLKHETI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --bg: #0b0b0c; --surface: #141416; --surface-2: #1b1b1e; --text: #f5f5f4;
+    --muted: #8b8b8f; --gold: #e8b44a; --line: rgba(245,245,244,.1); --red: #e5604d;
+    --font: "Inter", "Noto Sans Georgian", system-ui, sans-serif;
+  }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 var(--font); }
+  button, input, textarea { font: inherit; color: inherit; }
+  [hidden] { display: none !important; }
+
+  /* Login */
+  .login { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+  .login form { width: min(360px, 100%); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 28px; display: grid; gap: 14px; }
+  .login h1 { margin: 0 0 4px; font-size: 18px; letter-spacing: .08em; }
+
+  /* Shell */
+  header { position: sticky; top: 0; z-index: 5; background: rgba(11,11,12,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .bar { max-width: 1080px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .brand { font-weight: 700; letter-spacing: .1em; font-size: 13px; margin-right: auto; }
+  .brand a { color: var(--gold); text-decoration: none; font-weight: 500; letter-spacing: 0; margin-left: 8px; }
+  nav.tabs { max-width: 1080px; margin: 0 auto; padding: 0 16px; display: flex; gap: 4px; overflow-x: auto; }
+  nav.tabs button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 10px 12px; color: var(--muted); cursor: pointer; white-space: nowrap; }
+  nav.tabs button[aria-selected="true"] { color: var(--text); border-color: var(--gold); }
+  main { max-width: 1080px; margin: 0 auto; padding: 24px 16px 80px; }
+
+  /* Controls */
+  label.f { display: grid; gap: 6px; }
+  label.f > span { color: var(--muted); font-size: 12px; }
+  input[type=text], input[type=email], input[type=password], textarea {
+    width: 100%; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; outline: none;
+  }
+  input:focus, textarea:focus { border-color: var(--gold); }
+  textarea { min-height: 84px; resize: vertical; }
+  .btn { background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+  .btn:hover { border-color: rgba(245,245,244,.3); }
+  .btn--gold { background: var(--gold); color: #141414; border-color: var(--gold); font-weight: 600; }
+  .btn--gold:hover { filter: brightness(1.08); border-color: var(--gold); }
+  .btn--danger { color: var(--red); }
+  .btn:disabled { opacity: .5; cursor: default; }
+  .btn--sm { padding: 5px 10px; font-size: 13px; }
+  .status { font-size: 13px; color: var(--muted); }
+  .status.err { color: var(--red); }
+  .status.ok { color: var(--gold); }
+
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-bottom: 20px; }
+  .panel h2 { margin: 0 0 16px; font-size: 15px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .full { grid-column: 1 / -1; }
+  .meta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+
+  /* Item editor */
+  .item { display: grid; grid-template-columns: 180px 1fr; gap: 18px; padding: 16px 0; border-top: 1px solid var(--line); }
+  .item:first-of-type { border-top: 0; padding-top: 0; }
+  .pic { position: relative; aspect-ratio: 5/4; border-radius: 10px; overflow: hidden; border: 1px solid var(--line);
+    background: radial-gradient(120% 110% at 28% 12%, var(--b), transparent 72%), linear-gradient(152deg, var(--a), #0d0d0f 82%);
+    display: grid; place-content: center; color: rgba(232,180,74,.5); font-size: 22px; letter-spacing: .2em; }
+  .pic img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .pic-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .colors { display: flex; gap: 8px; align-items: center; margin-top: 8px; color: var(--muted); font-size: 12px; }
+  .colors input { width: 32px; height: 26px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: none; cursor: pointer; }
+  .item-fields { display: grid; gap: 10px; }
+  .item-head { display: flex; align-items: center; gap: 6px; }
+  .item-head b { margin-right: auto; color: var(--gold); font-size: 12px; letter-spacing: .1em; }
+
+  /* Sign-ups */
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 500; font-size: 12px; }
+  td.when { color: var(--muted); white-space: nowrap; }
+  .toolbar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+  .toolbar .grow { margin-right: auto; }
+
+  @media (max-width: 700px) {
+    .grid2, .grid3 { grid-template-columns: 1fr; }
+    .item { grid-template-columns: 1fr; }
+    .pic { max-width: 260px; }
+    td.when { white-space: normal; }
+  }
+</style>
+</head>
+<body>
+
+<section class="login" id="login" hidden>
+  <form id="loginForm">
+    <h1>MAISON KOLKHETI</h1>
+    <span class="status">ადმინ პანელი</span>
+    <label class="f"><span>მომხმარებელი</span><input type="text" name="username" autocomplete="username" required></label>
+    <label class="f"><span>პაროლი</span><input type="password" name="password" autocomplete="current-password" required></label>
+    <button class="btn btn--gold" type="submit">შესვლა</button>
+    <p class="status err" id="loginStatus"></p>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <header>
+    <div class="bar">
+      <div class="brand">MAISON KOLKHETI · ADMIN <a href="/" target="_blank" rel="noopener">საიტი ↗</a></div>
+      <span class="status" id="saveStatus"></span>
+      <button class="btn btn--gold" id="save" type="button">შენახვა</button>
+      <button class="btn" id="logout" type="button">გასვლა</button>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="artists" aria-selected="true">მხატვრები</button>
+      <button role="tab" data-tab="jewelry" aria-selected="false">სამკაულები</button>
+      <button role="tab" data-tab="signups" aria-selected="false">რეგისტრაციები</button>
+      <button role="tab" data-tab="texts" aria-selected="false">ტექსტები და კონტაქტი</button>
+    </nav>
+  </header>
+  <main id="view"></main>
+</div>
+
+<script>
+(() => {
+  const $ = (s, el = document) => el.querySelector(s);
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const ROMAN = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
+
+  let content = null;
+  let dirty = false;
+  let tab = "artists";
+  let signups = null;
+
+  async function api(path, opts = {}) {
+    const res = await fetch(path, { credentials: "same-origin", ...opts });
+    const data = await res.json().catch(() => ({}));
+    if (res.status === 401 && path !== "/api/admin/login") { showLogin(); throw new Error("სესია ამოიწურა — შედით თავიდან"); }
+    if (!res.ok) throw new Error(data.error || "შეცდომა");
+    return data;
+  }
+
+  // ---------- Auth ----------
+  function showLogin() { $("#app").hidden = true; $("#login").hidden = false; }
+  async function showApp() {
+    $("#login").hidden = true; $("#app").hidden = false;
+    content = await api("/api/admin/content");
+    render();
+  }
+
+  $("#loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    $("#loginStatus").textContent = "";
+    try {
+      await api("/api/admin/login", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: f.username.value.trim(), password: f.password.value }) });
+      f.reset();
+      await showApp();
+    } catch (err) { $("#loginStatus").textContent = err.message; }
+  });
+
+  $("#logout").addEventListener("click", async () => {
+    if (dirty && !confirm("შეუნახავი ცვლილებები დაიკარგება. გავიდეთ?")) return;
+    await fetch("/api/admin/login", { method: "DELETE" });
+    dirty = false; showLogin();
+  });
+
+  // ---------- Saving ----------
+  const status = (text, kind = "") => { const s = $("#saveStatus"); s.textContent = text; s.className = "status " + kind; };
+  const touch = () => { dirty = true; status("შეუნახავი ცვლილებები"); };
+
+  $("#save").addEventListener("click", async () => {
+    const btn = $("#save");
+    btn.disabled = true; status("ინახება…");
+    try {
+      content = await api("/api/admin/content", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(content) });
+      dirty = false; status("შენახულია ✓ — საიტზე რამდენიმე წამში გამოჩნდება", "ok");
+    } catch (err) { status(err.message, "err"); }
+    finally { btn.disabled = false; }
+  });
+
+  window.addEventListener("beforeunload", (e) => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+  // ---------- Tabs ----------
+  document.querySelectorAll("[data-tab]").forEach((b) => b.addEventListener("click", () => {
+    tab = b.dataset.tab;
+    document.querySelectorAll("[data-tab]").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+    render();
+  }));
+
+  function render() {
+    $("#save").hidden = tab === "signups";
+    if (tab === "signups") return renderSignups();
+    if (tab === "texts") return renderTexts();
+    renderSection(tab);
+  }
+
+  // Binds every [data-k] input to a path inside an object
+  function bind(root, obj) {
+    root.querySelectorAll("[data-k]").forEach((el) => {
+      el.addEventListener("input", () => { obj[el.dataset.k] = el.value; touch(); });
+    });
+  }
+
+  const field = (label, key, value, area) => `<label class="f"><span>${label}</span>${
+    area ? `<textarea data-k="${key}">${esc(value)}</textarea>` : `<input type="text" data-k="${key}" value="${esc(value)}">`}</label>`;
+
+  // ---------- Artists / Jewelry ----------
+  function renderSection(name) {
+    const s = content[name];
+    const label = name === "artists" ? "მხატვარი" : "კოლექცია";
+    const view = $("#view");
+    view.innerHTML = `
+      <div class="panel">
+        <h2>გვერდის თავი</h2>
+        <div class="grid2" id="head">
+          ${field("ზედა წარწერა", "tag", s.tag)}
+          ${field("სათაური", "title", s.title)}
+          <div class="full">${field("შესავალი ტექსტი", "intro", s.intro, true)}</div>
+        </div>
+        <h2 style="margin-top:18px">მაჩვენებლები (სათაურის ქვეშ)</h2>
+        <div class="grid3" id="meta">
+          ${s.meta.map((m, i) => `<div class="meta-row" data-i="${i}">
+            <input type="text" data-k="value" value="${esc(m.value)}" placeholder="მნიშვნელობა" aria-label="მნიშვნელობა">
+            <input type="text" data-k="label" value="${esc(m.label)}" placeholder="წარწერა" aria-label="წარწერა">
+          </div>`).join("")}
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="toolbar"><h2 class="grow" style="margin:0">${name === "artists" ? "მხატვრები" : "კოლექციები"} (${s.items.length})</h2>
+          <button class="btn btn--sm" id="add" type="button">+ ${label}ს დამატება</button></div>
+        <div id="items">${s.items.map((it, i) => itemHtml(it, i, s.items.length)).join("")}</div>
+      </div>
+
+      <div class="panel">
+        <h2>ბოლო ბლოკი (კონტაქტი)</h2>
+        <div class="grid2" id="closing">
+          ${field("სათაური", "closingTitle", s.closingTitle)}
+          <div class="full">${field("ტექსტი", "closingText", s.closingText, true)}</div>
+        </div>
+      </div>`;
+
+    bind($("#head", view), s);
+    bind($("#closing", view), s);
+    view.querySelectorAll("#meta [data-i]").forEach((row) => bind(row, s.meta[row.dataset.i]));
+    view.querySelectorAll(".item").forEach((row) => wireItem(row, s));
+    $("#add", view).addEventListener("click", () => {
+      s.items.push({ name: "", medium: "", note: "", image: "", a: "#1b1914", b: "#3e3827" });
+      touch(); renderSection(name);
+      view.querySelector(".item:last-of-type input")?.focus();
+    });
+  }
+
+  function itemHtml(it, i, n) {
+    return `<div class="item" data-i="${i}" style="--a:${esc(it.a)};--b:${esc(it.b)}">
+      <div>
+        <div class="pic">${it.image ? `<img src="${esc(it.image)}" alt="">` : (ROMAN[i] || i + 1)}</div>
+        <div class="pic-actions">
+          <label class="btn btn--sm">${it.image ? "ფოტოს შეცვლა" : "ფოტოს ატვირთვა"}<input type="file" accept="image/*" hidden data-upload></label>
+          ${it.image ? `<button class="btn btn--sm btn--danger" type="button" data-noimg>მოშლა</button>` : ""}
+        </div>
+        ${it.image ? "" : `<div class="colors">ფერები <input type="color" data-color="a" value="${esc(it.a)}"><input type="color" data-color="b" value="${esc(it.b)}"></div>`}
+        <p class="status" data-upstatus></p>
+      </div>
+      <div class="item-fields">
+        <div class="item-head"><b>${String(i + 1).padStart(2, "0")}</b>
+          <button class="btn btn--sm" type="button" data-move="-1" ${i === 0 ? "disabled" : ""} aria-label="ზემოთ">↑</button>
+          <button class="btn btn--sm" type="button" data-move="1" ${i === n - 1 ? "disabled" : ""} aria-label="ქვემოთ">↓</button>
+          <button class="btn btn--sm btn--danger" type="button" data-del>წაშლა</button>
+        </div>
+        ${field("სახელი", "name", it.name)}
+        ${field("ტექნიკა / მასალა · წლები", "medium", it.medium)}
+        ${field("აღწერა", "note", it.note, true)}
+      </div>
+    </div>`;
+  }
+
+  function wireItem(row, s) {
+    const i = Number(row.dataset.i);
+    const it = s.items[i];
+    bind($(".item-fields", row), it);
+    const again = () => renderSection(tab);
+
+    row.querySelectorAll("[data-color]").forEach((inp) => inp.addEventListener("input", () => {
+      it[inp.dataset.color] = inp.value; row.style.setProperty("--" + inp.dataset.color, inp.value); touch();
+    }));
+    $("[data-del]", row).addEventListener("click", () => {
+      if (!confirm(`წავშალოთ „${it.name || "ჩანაწერი"}“?`)) return;
+      s.items.splice(i, 1); touch(); again();
+    });
+    row.querySelectorAll("[data-move]").forEach((b) => b.addEventListener("click", () => {
+      const j = i + Number(b.dataset.move);
+      [s.items[i], s.items[j]] = [s.items[j], s.items[i]]; touch(); again();
+    }));
+    $("[data-noimg]", row)?.addEventListener("click", () => { it.image = ""; touch(); again(); });
+    $("[data-upload]", row).addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const st = $("[data-upstatus]", row);
+      st.className = "status"; st.textContent = "იტვირთება…";
+      try {
+        const blob = await shrink(file);
+        const { url } = await api("/api/admin/upload", { method: "POST", headers: { "Content-Type": "application/octet-stream", "X-Image-Type": blob.type }, body: blob });
+        it.image = url; touch(); again();
+      } catch (err) { st.className = "status err"; st.textContent = err.message; }
+    });
+  }
+
+  // Photos are resized to at most 2000px and re-encoded as WebP in the
+  // browser, which keeps uploads small and the site fast.
+  async function shrink(file) {
+    const MAX = 2000;
+    const bmp = await createImageBitmap(file).catch(() => { throw new Error("ფაილი ვერ წავიკითხე — აირჩიეთ JPG/PNG/WebP"); });
+    const k = Math.min(1, MAX / Math.max(bmp.width, bmp.height));
+    const c = document.createElement("canvas");
+    c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+    c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+    const out = await new Promise((r) => c.toBlob(r, "image/webp", 0.86));
+    if (out && out.type === "image/webp") return out;
+    return await new Promise((r) => c.toBlob(r, "image/jpeg", 0.88));
+  }
+
+  // ---------- Texts & contact ----------
+  function renderTexts() {
+    $("#view").innerHTML = `
+      <div class="panel">
+        <h2>კონტაქტი</h2>
+        <div class="grid2" id="contact">
+          <label class="f"><span>ელ-ფოსტა („Get in touch“ ღილაკი)</span><input type="email" data-k="email" value="${esc(content.contact.email)}"></label>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>მთავარი გვერდი — „Next Exhibition“ ფანჯარა</h2>
+        <div class="grid2" id="home">
+          ${field("სათაური", "signupTitle", content.home.signupTitle)}
+          <div class="full">${field("ტექსტი", "signupLead", content.home.signupLead, true)}</div>
+        </div>
+      </div>
+      <p class="status">მხატვრებისა და სამკაულების გვერდის ტექსტები შესაბამის ჩანართებშია.</p>`;
+    bind($("#contact"), content.contact);
+    bind($("#home"), content.home);
+  }
+
+  // ---------- Sign-ups ----------
+  async function renderSignups() {
+    const view = $("#view");
+    view.innerHTML = `<div class="panel"><p class="status">იტვირთება…</p></div>`;
+    try { signups = await api("/api/admin/signups"); }
+    catch (err) { view.innerHTML = `<div class="panel"><p class="status err">${esc(err.message)}</p></div>`; return; }
+    if (tab !== "signups") return;
+
+    const fmt = (iso) => new Date(iso).toLocaleString("ka-GE", { dateStyle: "medium", timeStyle: "short" });
+    view.innerHTML = `
+      <div class="panel">
+        <div class="toolbar">
+          <h2 class="grow" style="margin:0">გამოფენის რეგისტრაციები (${signups.length})</h2>
+          <button class="btn btn--sm" id="copy" type="button" ${signups.length ? "" : "disabled"}>ელ-ფოსტების კოპირება</button>
+          <button class="btn btn--sm" id="csv" type="button" ${signups.length ? "" : "disabled"}>CSV ჩამოტვირთვა</button>
+          <button class="btn btn--sm" id="reload" type="button">განახლება</button>
+        </div>
+        ${signups.length ? `<table>
+          <thead><tr><th>სახელი</th><th>ელ-ფოსტა</th><th>თარიღი</th><th></th></tr></thead>
+          <tbody>${signups.map((s, i) => `<tr>
+            <td>${esc(s.name) || '<span class="status">—</span>'}</td>
+            <td><a href="mailto:${esc(s.email)}" style="color:var(--gold)">${esc(s.email)}</a></td>
+            <td class="when">${fmt(s.at)}</td>
+            <td><button class="btn btn--sm btn--danger" type="button" data-rm="${i}">წაშლა</button></td>
+          </tr>`).join("")}</tbody></table>`
+        : `<p class="status">ჯერ რეგისტრაცია არ არის.</p>`}
+      </div>`;
+
+    $("#reload").addEventListener("click", renderSignups);
+    $("#copy").addEventListener("click", async () => {
+      const list = [...new Set(signups.map((s) => s.email))].join(", ");
+      await navigator.clipboard.writeText(list).catch(() => {});
+      $("#copy").textContent = "დაკოპირდა ✓";
+    });
+    $("#csv").addEventListener("click", () => {
+      const q = (v) => `"${String(v).replace(/"/g, '""')}"`;
+      const rows = [["Name", "Email", "Date"], ...signups.map((s) => [s.name, s.email, s.at])];
+      const blob = new Blob(["﻿" + rows.map((r) => r.map(q).join(",")).join("\r\n")], { type: "text/csv" });
+      const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: "exhibition-signups.csv" });
+      a.click(); URL.revokeObjectURL(a.href);
+    });
+    view.querySelectorAll("[data-rm]").forEach((b) => b.addEventListener("click", async () => {
+      const s = signups[b.dataset.rm];
+      if (!confirm(`წავშალოთ ${s.email}?`)) return;
+      b.disabled = true;
+      try { await api("/api/admin/signups", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ urls: [s.url] }) }); renderSignups(); }
+      catch (err) { alert(err.message); b.disabled = false; }
+    }));
+  }
+
+  // ---------- Start ----------
+  fetch("/api/admin/login").then((r) => r.json()).then((d) => (d.ok ? showApp() : showLogin())).catch(showLogin);
+})();
+</script>
+</body>
+</html>
