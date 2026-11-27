@@ -62,7 +62,7 @@
     if (items) items.innerHTML = s.items.map(card).join("");
     const mail = slot("email");
     if (mail && c.contact?.email) mail.href = "mailto:" + c.contact.email;
-    document.title = `${s.title} — MAISON KOLKHETI`;
+    document.title = `${s.title} — Maison Colchia`;
   }
 
   const ready = page

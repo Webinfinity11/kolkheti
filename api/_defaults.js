@@ -15,7 +15,7 @@ export const DEFAULTS = {
     tag: "Collection",
     title: "Artists",
     intro:
-      "Six authors whose work belongs to the MAISON KOLKHETI collection. Each of them reads the myth of Colchis in their own language.",
+      "Six authors whose work belongs to the Maison Colchia collection. Each of them reads the myth of Colchis in their own language.",
     meta: [
       { value: "06", label: "Artists" },
       { value: "2018—2025", label: "Period" },

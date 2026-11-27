@@ -99,7 +99,7 @@ export async function readContent() {
 }
 
 const str = (v, fallback = "", max = 4000) =>
-  (typeof v === "string" ? v : fallback).slice(0, max).trim();
+  (typeof v === "string" ? v : fallback).replace(/maison kolkheti/gi, "Maison Colchia").slice(0, max).trim();
 const color = (v, fallback) => (/^#[0-9a-f]{6}$/i.test(v || "") ? v : fallback);
 const url = (v) => (typeof v === "string" && /^https:\/\/[^\s"'<>]+$/.test(v) ? v : "");
 
