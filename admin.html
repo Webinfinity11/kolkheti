@@ -215,6 +215,10 @@
     const label = name === "artists" ? "მხატვარი" : "კოლექცია";
     const view = $("#view");
     view.innerHTML = `
+      ${name === "jewelry" ? `<div class="panel" id="soon">
+        <h2>ტექსტი, სანამ კოლექცია არ არის</h2>
+        ${field("ჩანს მანამ, სანამ ერთ კოლექციას მაინც ფოტო არ ექნება", "soon", s.soon)}
+      </div>` : ""}
       <div class="panel">
         <h2>გვერდის თავი</h2>
         <div class="grid2" id="head">
@@ -246,6 +250,7 @@
       </div>`;
 
     bind($("#head", view), s);
+    if (name === "jewelry") bind($("#soon", view), s);
     bind($("#closing", view), s);
     view.querySelectorAll("#meta [data-i]").forEach((row) => bind(row, s.meta[row.dataset.i]));
     view.querySelectorAll(".item").forEach((row) => wireItem(row, s));

@@ -402,6 +402,21 @@ a { color: inherit; }
   .site-head__in { flex-direction: column; justify-content: center; gap: 8px; height: 84px; }
 }
 
+/* ---------- Jewelry, before there is a collection ---------- */
+
+.soon:not([hidden]) {
+  display: grid;
+  align-items: center;
+  min-height: calc(100vh - 220px);
+  text-align: center;
+}
+.soon h1 {
+  max-width: 18ch;
+  margin: 28px auto 0;
+  font: 400 clamp(30px, 5vw, 54px)/1.25 "Marcellus SC", Georgia, serif;
+  color: #e6bc6c;
+}
+
 /* ---------- Our Story ---------- */
 
 .story { padding: 0 0 clamp(56px, 11vh, 120px); }

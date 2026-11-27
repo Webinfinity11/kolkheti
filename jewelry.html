@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Marcellus+SC&family=Playfair+Display:wght@500&display=swap">
-<link rel="stylesheet" href="pages.css?v=13">
+<link rel="stylesheet" href="pages.css?v=14">
 <link rel="stylesheet" href="social.css?v=2">
 </head>
 <body data-page="jewelry">
@@ -27,7 +27,16 @@
 
 <main>
 
-  <section class="hero">
+  <!-- Shown until a collection has a photo (see pages.js); the sections below
+       stay hidden until then. -->
+  <section class="soon" data-c="soonBox">
+    <div class="wrap">
+      <span class="tag hero__tag">Jewelry</span>
+      <h1 data-c="soon">We would love to represent your country</h1>
+    </div>
+  </section>
+
+  <section class="hero" data-full hidden>
     <div class="wrap">
       <span class="tag hero__tag" data-c="tag">Collection</span>
       <h1 data-c="title">Jewelry</h1>
@@ -44,7 +53,7 @@
   </section>
 
   <!-- Two columns, same system as the artists page. -->
-  <section class="grid-section">
+  <section class="grid-section" data-full hidden>
     <div class="wrap grid" data-c="items">
 
       <article class="card" style="--a:#231a0d; --b:#5b441a">
@@ -85,7 +94,7 @@
     </div>
   </section>
 
-  <section class="closing">
+  <section class="closing" data-full hidden>
     <div class="wrap closing__in">
       <div>
         <span class="tag hero__tag">Contact</span>
@@ -119,7 +128,7 @@
   </div>
 </div>
 
-<script src="pages.js?v=9"></script>
+<script src="pages.js?v=10"></script>
 <script src="social.js?v=2"></script>
 </body>
 </html>

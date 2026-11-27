@@ -164,6 +164,9 @@ export function normalize(input) {
       text: str(c.story?.text, DEFAULTS.story.text, 20000),
     },
     artists: section(c.artists, DEFAULTS.artists),
-    jewelry: section(c.jewelry, DEFAULTS.jewelry),
+    jewelry: {
+      ...section(c.jewelry, DEFAULTS.jewelry),
+      soon: str(c.jewelry?.soon, DEFAULTS.jewelry.soon, 300),
+    },
   };
 }

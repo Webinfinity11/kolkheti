@@ -76,6 +76,7 @@ export const DEFAULTS = {
     ],
   },
   jewelry: {
+    soon: "We would love to represent your country",
     tag: "Collection",
     title: "Jewelry",
     intro:

@@ -43,6 +43,13 @@
     if (page === "story") return c.story && renderStory(c.story);
     const s = c[page];
     if (!s) return;
+    // Jewelry shows only a message until at least one collection has a photo
+    if (page === "jewelry") {
+      const full = s.items.some((it) => it.image);
+      slot("soonBox").hidden = full;
+      document.querySelectorAll("[data-full]").forEach((el) => { el.hidden = !full; });
+      slot("soon").textContent = s.soon;
+    }
     const set = (name, text) => { const el = slot(name); if (el) el.textContent = text; };
     set("tag", s.tag);
     set("title", s.title);
