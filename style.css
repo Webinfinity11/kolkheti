@@ -116,7 +116,7 @@ html, body {
 .enter a {
   position: relative;
   padding: 8px 2px;
-  font: 500 clamp(16px, 2.1vw, 22px)/1 "Playfair Display", Georgia, serif;
+  font: 500 clamp(13px, 1.5vw, 17px)/1 "Playfair Display", Georgia, serif;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   text-decoration: none;
@@ -155,7 +155,7 @@ html, body {
 @media (max-width: 480px) {
   .enter { gap: 20px; }
   .enter a {
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: 0.14em;
   }
 }
@@ -426,3 +426,10 @@ html, body {
   letter-spacing: 0.3em;
   color: rgba(232, 227, 215, 0.42);
 }
+
+/* Social icons and contact details (social.css) wait for the end of the video,
+   like the menu. The inner pages have no .stage and show them straight away. */
+.social,
+.contact { transition: opacity 1s ease, visibility 1s; }
+body:has(.stage:not(.is-end)) .social,
+body:has(.stage:not(.is-end)) .contact { opacity: 0; visibility: hidden; }

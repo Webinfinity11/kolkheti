@@ -2,7 +2,7 @@
   const FRAME_COUNT = 240;
   const FRAME_W = 1280;   // aspect ratio of the source video
   const FRAME_H = 720;
-  const VERSION = 8;      // bump to bust browser cache after re-exporting frames
+  const VERSION = 9;      // bump to bust browser cache after re-exporting frames
   // Phones never show the frame much wider than ~1100 device px, so they get
   // the 1280px set; everything else gets the full 1920px one.
   const small = Math.min(screen.width, screen.height) <= 500;
@@ -100,7 +100,7 @@
   // fixed split we work out an offset that keeps both in frame: everything
   // from the top of the compass "N" down to the bottom of the caption.
   const SAFE_TOP = 30;      // top of the compass "N"
-  const SAFE_BOTTOM = 645;  // bottom of the SAKARTVELO caption
+  const SAFE_BOTTOM = 672;  // bottom of the SAKARTVELO caption
 
   // vh = how much of the frame's 720 units the viewport actually shows.
   // Returns the crop split: 0 keeps the top edge, 1 keeps the bottom edge.
@@ -111,8 +111,8 @@
     const lowest = Math.max(0, SAFE_BOTTOM - vh);  // any lower loses the caption
     const highest = Math.min(SAFE_TOP, slack);     // any higher loses the compass
     // Sit midway between the two limits for even margins; if the viewport is
-    // too short to hold both, fall back to centring the frame.
-    const offset = lowest <= highest ? (lowest + highest) / 2 : slack / 2;
+    // too short to hold both, keep the caption and give up the top of the compass.
+    const offset = lowest <= highest ? (lowest + highest) / 2 : Math.min(lowest, slack, 115);
     return offset / slack;
   }
 
