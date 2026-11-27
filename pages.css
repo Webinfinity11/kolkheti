@@ -395,8 +395,10 @@ a { color: inherit; }
 .site-foot a { text-decoration: none; }
 .site-foot a:hover { color: var(--text); }
 
+/* Room for the pinned social icons and contact details */
+.site-foot { padding-bottom: 80px; }
+
 @media (max-width: 600px) {
-  .site-foot { padding-bottom: 64px; }
   .site-head__in { flex-direction: column; justify-content: center; gap: 8px; height: 84px; }
 }
 

@@ -1,5 +1,6 @@
-/* Social links pinned to the bottom-left corner of every page. The addresses
-   come from /admin; an icon without one is shown but does not link anywhere. */
+/* Pinned to every page: social links bottom-left, phone and email bottom-right.
+   All of them come from /admin; a social icon without a link is shown but does
+   not link anywhere. */
 (() => {
   const TIKTOK = "M14.2 3h2.7c.2 2.2 1.6 3.8 3.8 4v2.8c-1.4 0-2.7-.4-3.8-1.2v6.3a5.7 5.7 0 1 1-5.7-5.7h.6v2.9a2.9 2.9 0 1 0 2.4 2.8z";
   const ICONS = {
@@ -18,9 +19,26 @@
     .join("");
   document.body.append(nav);
 
+  const contact = document.createElement("address");
+  contact.className = "contact";
+  contact.innerHTML = '<a data-phone></a><a data-mail></a>';
+  const show = (phone, email) => {
+    const set = (sel, text, href) => {
+      const a = contact.querySelector(sel);
+      a.textContent = text;
+      a.href = href;
+      a.hidden = !text;
+    };
+    set("[data-phone]", phone, "tel:" + phone.replace(/[^+\d]/g, ""));
+    set("[data-mail]", email, "mailto:" + email);
+  };
+  show("+1 (347) 930-4986", "maisoncolchia@gmail.com");
+  document.body.append(contact);
+
   fetch("/api/content")
     .then((r) => (r.ok ? r.json() : null))
     .then((c) => {
+      if (c?.contact) show(c.contact.phone ?? "", c.contact.email ?? "");
       nav.querySelectorAll("[data-s]").forEach((a) => {
         const link = c?.social?.[a.dataset.s];
         if (!link) return;

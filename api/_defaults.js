@@ -1,7 +1,7 @@
 // The site's content as it was hard-coded in the HTML before the admin panel.
 // Served until the first save from /admin, and used to fill any missing field.
 export const DEFAULTS = {
-  contact: { email: "info@kolkheti.ge" },
+  contact: { email: "maisoncolchia@gmail.com", phone: "+1 (347) 930-4986" },
   home: {
     signupTitle: "Next Exhibition",
     signupLead:

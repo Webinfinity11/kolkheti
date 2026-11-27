@@ -237,7 +237,8 @@ html, body {
 @media (max-width: 1150px) {
   .next-btn {
     top: auto;
-    bottom: clamp(12px, 2.5vh, 28px);
+    /* sits above the phone and email in the same corner */
+    bottom: calc(clamp(12px, 2.5vh, 28px) + 52px);
   }
 }
 @media (max-width: 600px) {

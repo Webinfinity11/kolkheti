@@ -142,7 +142,11 @@ function section(input, def) {
 export function normalize(input) {
   const c = input && typeof input === "object" ? input : {};
   return {
-    contact: { email: str(c.contact?.email, DEFAULTS.contact.email, 200) },
+    contact: {
+      // the old placeholder address may be stored in an earlier save
+      email: c.contact?.email === "info@kolkheti.ge" ? DEFAULTS.contact.email : str(c.contact?.email, DEFAULTS.contact.email, 200),
+      phone: str(c.contact?.phone, DEFAULTS.contact.phone, 60),
+    },
     home: {
       signupTitle: str(c.home?.signupTitle, DEFAULTS.home.signupTitle, 200),
       signupLead: str(c.home?.signupLead, DEFAULTS.home.signupLead),

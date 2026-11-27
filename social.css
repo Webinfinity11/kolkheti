@@ -23,8 +23,31 @@
 .social__tiktok,
 .social__x { background: #000; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
 
+.contact {
+  position: fixed;
+  right: clamp(12px, 2vw, 28px);
+  bottom: calc(clamp(12px, 2.5vh, 28px) + env(safe-area-inset-bottom, 0px));
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font: 400 13px/1.5 "Inter", system-ui, sans-serif;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 3px #000, 0 0 10px #000;
+}
+.contact a { color: #e9c98a; text-decoration: none; white-space: nowrap; }
+.contact a:hover,
+.contact a:focus-visible { color: #fff0c4; text-decoration: underline; }
+.contact a[hidden] { display: none; }
+
 @media (max-width: 600px) {
+  .contact { right: 12px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); font-size: 11px; }
   .social { left: 12px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); gap: 8px; }
   .social a { width: 32px; height: 32px; }
   .social svg { width: 17px; height: 17px; }
+}
+@media (max-width: 359px) {
+  .social { gap: 5px; }
+  .social a { width: 28px; height: 28px; }
+  .contact { font-size: 10px; }
 }
