@@ -33,7 +33,14 @@
       </article>`;
   }
 
+  function renderStory(s) {
+    slot("title").textContent = s.title;
+    slot("text").innerHTML = s.text.split(/\n\s*\n/).map((p) => `<p>${esc(p)}</p>`).join("");
+    document.title = `${s.title} — Maison Colchia`;
+  }
+
   function render(c) {
+    if (page === "story") return c.story && renderStory(c.story);
     const s = c[page];
     if (!s) return;
     const set = (name, text) => { const el = slot(name); if (el) el.textContent = text; };

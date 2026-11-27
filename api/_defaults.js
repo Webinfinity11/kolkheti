@@ -6,7 +6,11 @@ export const DEFAULTS = {
     signupTitle: "Next Exhibition",
     signupLead:
       "Leave your email and we will let you know when the next Maison Colchia exhibition opens.",
+    exhibitionDate: "2027-04-04",
+    exhibitionAddress: "Address to be announced",
   },
+  social: { facebook: "", instagram: "", tiktok: "", x: "" },
+  story: { title: "Our Story", text: "Our story is coming soon." },
   artists: {
     tag: "Collection",
     title: "Artists",

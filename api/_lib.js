@@ -103,6 +103,15 @@ const str = (v, fallback = "", max = 4000) =>
 const color = (v, fallback) => (/^#[0-9a-f]{6}$/i.test(v || "") ? v : fallback);
 const url = (v) => (typeof v === "string" && /^https:\/\/[^\s"'<>]+$/.test(v) ? v : "");
 
+// Social addresses are often pasted without the scheme
+const link = (v) => {
+  const s = str(v, "", 500);
+  return s ? url("https://" + s.replace(/^(https?:)?\/\//i, "")) : "";
+};
+// "" is a real choice (no date yet); anything malformed falls back
+const day = (v, fallback) =>
+  v === "" || /^\d{4}-\d{2}-\d{2}$/.test(v || "") ? v : fallback;
+
 function section(input, def) {
   const s = input && typeof input === "object" ? input : {};
   const meta = Array.isArray(s.meta) ? s.meta : def.meta;
@@ -137,6 +146,18 @@ export function normalize(input) {
     home: {
       signupTitle: str(c.home?.signupTitle, DEFAULTS.home.signupTitle, 200),
       signupLead: str(c.home?.signupLead, DEFAULTS.home.signupLead),
+      exhibitionDate: day(c.home?.exhibitionDate, DEFAULTS.home.exhibitionDate),
+      exhibitionAddress: str(c.home?.exhibitionAddress, DEFAULTS.home.exhibitionAddress, 200),
+    },
+    social: {
+      facebook: link(c.social?.facebook),
+      instagram: link(c.social?.instagram),
+      tiktok: link(c.social?.tiktok),
+      x: link(c.social?.x),
+    },
+    story: {
+      title: str(c.story?.title, DEFAULTS.story.title, 200),
+      text: str(c.story?.text, DEFAULTS.story.text, 20000),
     },
     artists: section(c.artists, DEFAULTS.artists),
     jewelry: section(c.jewelry, DEFAULTS.jewelry),

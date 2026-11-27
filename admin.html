@@ -37,7 +37,8 @@
   /* Controls */
   label.f { display: grid; gap: 6px; }
   label.f > span { color: var(--muted); font-size: 12px; }
-  input[type=text], input[type=email], input[type=password], textarea {
+  input[type=text], input[type=email], input[type=password], input[type=date], textarea {
+    color-scheme: dark;
     width: 100%; background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; outline: none;
   }
   input:focus, textarea:focus { border-color: var(--gold); }
@@ -114,6 +115,7 @@
     <nav class="tabs" role="tablist">
       <button role="tab" data-tab="artists" aria-selected="true">მხატვრები</button>
       <button role="tab" data-tab="jewelry" aria-selected="false">სამკაულები</button>
+      <button role="tab" data-tab="story" aria-selected="false">Our Story</button>
       <button role="tab" data-tab="signups" aria-selected="false">რეგისტრაციები</button>
       <button role="tab" data-tab="texts" aria-selected="false">ტექსტები და კონტაქტი</button>
     </nav>
@@ -193,6 +195,7 @@
     $("#save").hidden = tab === "signups";
     if (tab === "signups") return renderSignups();
     if (tab === "texts") return renderTexts();
+    if (tab === "story") return renderStory();
     renderSection(tab);
   }
 
@@ -322,6 +325,17 @@
     return await new Promise((r) => c.toBlob(r, "image/jpeg", 0.88));
   }
 
+  // ---------- Our Story ----------
+  function renderStory() {
+    $("#view").innerHTML = `
+      <div class="panel" id="story">
+        <h2>Our Story გვერდი</h2>
+        ${field("სათაური", "title", content.story.title)}
+        <label class="f" style="margin-top:14px"><span>ტექსტი (აბზაცები ცარიელი ხაზით გამოყავით)</span><textarea data-k="text" style="min-height:320px">${esc(content.story.text)}</textarea></label>
+      </div>`;
+    bind($("#story"), content.story);
+  }
+
   // ---------- Texts & contact ----------
   function renderTexts() {
     $("#view").innerHTML = `
@@ -329,6 +343,22 @@
         <h2>კონტაქტი</h2>
         <div class="grid2" id="contact">
           <label class="f"><span>ელ-ფოსტა („Get in touch“ ღილაკი)</span><input type="email" data-k="email" value="${esc(content.contact.email)}"></label>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>სოციალური ქსელები (ლინკები)</h2>
+        <div class="grid2" id="social">
+          ${field("Facebook", "facebook", content.social.facebook)}
+          ${field("Instagram", "instagram", content.social.instagram)}
+          ${field("TikTok", "tiktok", content.social.tiktok)}
+          ${field("X (Twitter)", "x", content.social.x)}
+        </div>
+      </div>
+      <div class="panel">
+        <h2>მთავარი გვერდი — „Next Exhibition“ ღილაკი</h2>
+        <div class="grid2" id="button">
+          <label class="f"><span>გამოფენის თარიღი (საიტი დარჩენილ დღეებს თვითონ ითვლის)</span><input type="date" data-k="exhibitionDate" value="${esc(content.home.exhibitionDate)}"></label>
+          ${field("მისამართი", "exhibitionAddress", content.home.exhibitionAddress)}
         </div>
       </div>
       <div class="panel">
@@ -341,6 +371,8 @@
       <p class="status">მხატვრებისა და სამკაულების გვერდის ტექსტები შესაბამის ჩანართებშია.</p>`;
     bind($("#contact"), content.contact);
     bind($("#home"), content.home);
+    bind($("#button"), content.home);
+    bind($("#social"), content.social);
   }
 
   // ---------- Sign-ups ----------

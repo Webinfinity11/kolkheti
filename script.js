@@ -2,7 +2,7 @@
   const FRAME_COUNT = 240;
   const FRAME_W = 1280;   // aspect ratio of the source video
   const FRAME_H = 720;
-  const VERSION = 7;      // bump to bust browser cache after re-exporting frames
+  const VERSION = 8;      // bump to bust browser cache after re-exporting frames
   // Phones never show the frame much wider than ~1100 device px, so they get
   // the 1280px set; everything else gets the full 1920px one.
   const small = Math.min(screen.width, screen.height) <= 500;
@@ -96,11 +96,11 @@
 
   // ---------- Canvas fit ----------
   // Where the vertical crop falls. Centring it cut the top off the compass
-  // rose while leaving dead space under the GEORGIA caption, so instead of a
+  // rose while leaving dead space under the SAKARTVELO caption, so instead of a
   // fixed split we work out an offset that keeps both in frame: everything
   // from the top of the compass "N" down to the bottom of the caption.
   const SAFE_TOP = 30;      // top of the compass "N"
-  const SAFE_BOTTOM = 645;  // bottom of the GEORGIA caption
+  const SAFE_BOTTOM = 645;  // bottom of the SAKARTVELO caption
 
   // vh = how much of the frame's 720 units the viewport actually shows.
   // Returns the crop split: 0 keeps the top edge, 1 keeps the bottom edge.
@@ -331,10 +331,22 @@
     status.classList.toggle("is-error", !!error);
   };
 
+  // Whole days from today in Tbilisi to the date set in /admin
+  function countdown(date) {
+    const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Tbilisi" });
+    const days = Math.round((Date.parse(date) - Date.parse(today)) / 864e5);
+    if (days > 1) return `${days} days left`;
+    if (days === 1) return "1 day left";
+    if (days === 0) return "Opening today";
+    return "Date to be announced"; // no date set, or it has passed
+  }
+
   fetch("/api/content")
     .then((r) => (r.ok ? r.json() : null))
     .then((c) => {
       if (!c?.home) return;
+      document.getElementById("nextDays").textContent = countdown(c.home.exhibitionDate);
+      if (c.home.exhibitionAddress) document.getElementById("nextPlace").textContent = c.home.exhibitionAddress;
       if (c.home.signupTitle) document.querySelector('[data-c="signupTitle"]').textContent = c.home.signupTitle;
       if (c.home.signupLead) document.querySelector('[data-c="signupLead"]').textContent = c.home.signupLead;
     })

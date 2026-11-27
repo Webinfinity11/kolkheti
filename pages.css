@@ -83,8 +83,9 @@ a { color: inherit; }
 }
 
 .wordmark {
-  font: 500 clamp(12px, 1.8vw, 15px)/1 var(--mark);
-  letter-spacing: 0.28em;
+  font: 400 clamp(15px, 2.4vw, 21px)/1 "Marcellus SC", Georgia, serif;
+  letter-spacing: 0.08em;
+  color: #e6bc6c;
   text-decoration: none;
   white-space: nowrap;
 }
@@ -393,6 +394,16 @@ a { color: inherit; }
 }
 .site-foot a { text-decoration: none; }
 .site-foot a:hover { color: var(--text); }
+
+@media (max-width: 600px) {
+  .site-foot { padding-bottom: 64px; }
+  .site-head__in { flex-direction: column; justify-content: center; gap: 8px; height: 84px; }
+}
+
+/* ---------- Our Story ---------- */
+
+.story { padding: 0 0 clamp(56px, 11vh, 120px); }
+.story p { max-width: 62ch; margin: 0 0 18px; font-size: 16px; line-height: 1.8; color: var(--muted); white-space: pre-line; }
 
 /* ---------- Detail sheet ----------
    What the pill opens today. Swap the button for a link to a real per-work
